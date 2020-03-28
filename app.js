@@ -15,7 +15,7 @@ admin.initializeApp({
     databaseURL: "https://vku-firebase.firebaseio.com"
 });
 
-const uri = "mongodb+srv://tsnanh:0543565053Ben@cluster0-ecgyh.gcp.mongodb.net/vku?retryWrites=true&w=majority";
+const uri = "mongodb+srv://tsnanh:tsnanhdbaccess@cluster0-ecgyh.gcp.mongodb.net/vku?retryWrites=true&w=majority";
 
 const connectDB = async () => {
     try {
