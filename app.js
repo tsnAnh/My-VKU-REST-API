@@ -15,7 +15,7 @@ admin.initializeApp({
     databaseURL: "https://vku-firebase.firebaseio.com"
 });
 
-const uri = "mongodb+srv://tsnanh:tsnanhdbaccess@cluster0-ecgyh.gcp.mongodb.net/vku?retryWrites=true&w=majority";
+const uri = "mongodb+srv://tsnanh:tsnanh@cluster0-ecgyh.gcp.mongodb.net/VKU?retryWrites=true&w=majority";
 
 const connectDB = async () => {
     try {
@@ -26,12 +26,12 @@ const connectDB = async () => {
             useFindAndModify: false
         });
         console.log("connected!");
-        // await Forum.create({
-        //     title: "Windows",
-        //     subtitle: "Operating System",
-        //     description: "Nơi thảo luận về Windows, các vấn đề về máy tính chạy Windows, cài win dạo, tư vấn mua máy tính, laptop...",
-        //     image: "https://foto.haberler.com/haber/2019/05/29/microsoft-un-yeni-isletim-sistemi-windows-cor-12097581_amp.jpg"
-        // });
+        await Forum.create({
+            title: "Windows",
+            subtitle: "Operating System",
+            description: "Nơi thảo luận về Windows, các vấn đề về máy tính chạy Windows, cài win dạo, tư vấn mua máy tính, laptop...",
+            image: "https://foto.haberler.com/haber/2019/05/29/microsoft-un-yeni-isletim-sistemi-windows-cor-12097581_amp.jpg"
+        });
     } catch (e) {
         console.log(e);
     }
