@@ -8,17 +8,23 @@ const UserSchema = new Schema({
     email: String,
     is_email_verified: Boolean,
     provider_id: String,
+    number_of_threads: {
+        type: Number,
+        default: 0,
+    },
     threads: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Thread'
-        }]
+        }],
+        default: []
     },
     posts: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Post'
-        }]
+        }],
+        default: []
     }
 });
 

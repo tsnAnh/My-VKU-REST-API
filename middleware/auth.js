@@ -1,9 +1,17 @@
 const admin = require('firebase-admin');
+const mongoose = require('mongoose');
 
-exports.middleware = async (req, res, next) => {
-    const idToken = req.body.idToken;
+const User = require('../schema/User.module');
+
+exports.auth = async (req, res, next) => {
+    const idToken = req.headers.id_token;
+    console.log(idToken);
     admin.auth().verifyIdToken(idToken, true).then(async (decodedIdToken) => {
-        console.log(decodedIdToken.name);
-        next()
-    })
+        const user = User.findOne({ uid: decodedIdToken.uid });
+        res.locals.user = user;
+        res.locals.uid = decodedIdToken.uid;
+        next();
+    }).catch(() => {
+        console.log("Unauthorized");
+    });
 };

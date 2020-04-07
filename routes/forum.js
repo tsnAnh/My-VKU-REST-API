@@ -16,11 +16,10 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:path', async (req, res) => {
+router.get('/:idForum', async (req, res) => {
+    const idForum = req.params.idForum;
     try {
-        const path = req.params.path;
-        const forum = await Forum.find({ path: path });
-        const threads = await Thread.find({ forum_id: forum._id });
+        const threads = await Thread.find({ forum_id: idForum });
 
         res.json(threads);
     } catch (e) {

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { ObjectID } = require('mongodb');
 const Schema = mongoose.Schema;
 
 const forumSchema = new Schema({
@@ -15,20 +14,17 @@ const forumSchema = new Schema({
     image: {
         type: String
     },
-    thread_number: {
+    number_of_threads: {
         type: Number,
         default: 0
     },
-    post_number: {
+    number_of_posts: {
         type: Number,
         default: 0
     },
     last_updated_on: {
         type: Date,
         default: Date.now()
-    },
-    slug: {
-        type: String
     },
     threads: {
         type: [{

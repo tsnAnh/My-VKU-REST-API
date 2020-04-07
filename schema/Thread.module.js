@@ -5,21 +5,19 @@ const ThreadSchema = new Schema({
     title: {
         type: String
     },
-    content: {
-        type: String
-    },
-    image: {
-        type: [String]
-    },
     forum_id: {
         type: Schema.Types.ObjectId,
         ref: 'Forum'
     },
-    post_number: {
-        type: Number
+    user_display_name: String,
+    user_avatar: String,
+    number_of_posts: {
+        type: Number,
+        default: 1
     },
-    view_number: {
-        type: Number
+    number_of_views: {
+        type: Number,
+        default: 0
     },
     user_id: {
         type: Schema.Types.ObjectId,
@@ -33,17 +31,16 @@ const ThreadSchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    slug: {
-        type: String
-    },
     posts: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Post'
-        }]
+        }],
+        default: []
     },
     edit_history: {
-        type: [String]
+        type: [String],
+        default: []
     }
 });
 

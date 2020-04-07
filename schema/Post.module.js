@@ -7,6 +7,9 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    image: {
+        type: [String]
+    },
     thread_id: {
         type: Schema.Types.ObjectId,
         ref: 'Thread'
@@ -14,7 +17,7 @@ const PostSchema = new Schema({
     edit_history: {
         type: [String]
     },
-    create_at: {
+    created_at: {
         type: Date,
         default: Date.now()
     }

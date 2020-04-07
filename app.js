@@ -26,12 +26,12 @@ const connectDB = async () => {
             useFindAndModify: false
         });
         console.log("connected!");
-        await Forum.create({
-            title: "Windows",
-            subtitle: "Operating System",
-            description: "Nơi thảo luận về Windows, các vấn đề về máy tính chạy Windows, cài win dạo, tư vấn mua máy tính, laptop...",
-            image: "https://foto.haberler.com/haber/2019/05/29/microsoft-un-yeni-isletim-sistemi-windows-cor-12097581_amp.jpg"
-        });
+        // await Forum.create({
+        //     title: "iOS",
+        //     subtitle: "Mobile Operating System",
+        //     description: "Nơi thảo luận về iOS, các vấn đề về iOS, Swift, Objective C, xCode, tư vấn mua iPhone, Macbook...",
+        //     image: "https://thuthuatios.com/wp-content/uploads/2018/07/apple-logo.jpg"
+        // });
     } catch (e) {
         console.log(e);
     }
@@ -41,6 +41,7 @@ connectDB();
 const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/news');
 const forumRouter = require('./routes/forum');
+const threadRouter = require('./routes/thread');
 
 const app = express();
 
@@ -53,5 +54,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/news', newsRouter);
 app.use('/forum', forumRouter);
+app.use('/t', threadRouter);
 
 module.exports = app;
