@@ -7,7 +7,6 @@ const UserSchema = new Schema({
     photo_url: String,
     email: String,
     is_email_verified: Boolean,
-    provider_id: String,
     number_of_threads: {
         type: Number,
         default: 0,

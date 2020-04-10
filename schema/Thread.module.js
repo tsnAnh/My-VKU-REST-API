@@ -27,7 +27,7 @@ const ThreadSchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    last_update_on: {
+    last_updated_on: {
         type: Date,
         default: Date.now()
     },

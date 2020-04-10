@@ -19,9 +19,9 @@ router.get('/', async (req, res) => {
 router.get('/:idForum', async (req, res) => {
     const idForum = req.params.idForum;
     try {
-        const threads = await Thread.find({ forum_id: idForum });
+        const forum = await Forum.findById(idForum);
 
-        res.json(threads);
+        res.json(forum);
     } catch (e) {
         console.log(e);
         throw e;

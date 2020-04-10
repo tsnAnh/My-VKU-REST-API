@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -12,6 +12,7 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-firebase-middleware": "^3.0.0",
     "firebase-admin": "^8.10.0",
     "fs": "0.0.1-security",
     "mongodb": "^3.5.4",
