@@ -15,7 +15,7 @@ const upload = multer({
   dest: "../uploads",
 });
 
-router.get('/user/is_user_registered', async (req, res) => {
+router.get('/user/is_user_registered', firebaseMiddleware.auth, async (req, res) => {
   const user = await User.findOne({uid: res.locals.user.uid});
   if (user != null) {
     res.json(true);
