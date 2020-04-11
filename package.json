@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "if [$NODE_ENV == 'production']; then node ./bin/www; else nodemon ./bin/www; fi"
   },
   "dependencies": {
     "axios": "^0.19.2",
