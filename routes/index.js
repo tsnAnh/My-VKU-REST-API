@@ -87,9 +87,7 @@ router.post(
   async (req, res) => {
     try {
       const requestThread = req.body.thread;
-      console.log(requestThread);
       const requestPost = req.body.post;
-      console.log(requestPost);
       const userId = res.locals.dbUser._id;
 
       const thread = new Thread({
@@ -98,7 +96,7 @@ router.post(
         image: requestThread.image,
         forum_id: requestThread.forum_id,
         user_id: userId,
-        user_avatar: res.locals.dbUser.photoURL,
+        user_avatar: res.locals.dbUser.photo_url,
         user_display_name: res.locals.dbUser.display_name,
       });
 
