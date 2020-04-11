@@ -160,4 +160,13 @@ router.post(
   }
 );
 
+router.get('/r/:thread_id', async (req, res) => {
+  try {
+    const posts = await Post.find({ thread_id: req.params.thread_id });
+    res.json({ posts: posts });
+  } catch (e) {
+    throw e;
+  }
+});
+
 module.exports = router;

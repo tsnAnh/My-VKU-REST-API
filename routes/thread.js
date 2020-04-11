@@ -19,4 +19,13 @@ router.get('/:forum_id', async (req, res) => {
     }
 });
 
+router.get("/get/:thread_id", async (req, res) => {
+    try {
+        const thread = await Thread.findOne({ _id: req.params.thread_id });
+        res.json(thread);
+    } catch (e) {
+        throw e;
+    }
+});
+
 module.exports = router;

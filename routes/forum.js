@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:idForum', async (req, res) => {
+router.get('/get/:idForum', async (req, res) => {
     const idForum = req.params.idForum;
     try {
         const forum = await Forum.findById(idForum);
