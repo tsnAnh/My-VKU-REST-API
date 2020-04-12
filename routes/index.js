@@ -12,7 +12,7 @@ const multer = require("multer");
 const { ObjectID } = require("mongodb");
 const admin = require("firebase-admin");
 const upload = multer({
-  dest: "uploads/",
+  dest: "../uploads/",
 });
 
 const fs = require("fs");
