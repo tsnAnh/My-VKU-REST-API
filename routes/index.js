@@ -12,8 +12,10 @@ const multer = require("multer");
 const { ObjectID } = require("mongodb");
 const admin = require("firebase-admin");
 const upload = multer({
-  dest: "../uploads",
+  dest: "uploads/",
 });
+
+const fs = require("fs");
 
 router.get(
   "/user/is_user_registered",
@@ -100,15 +102,14 @@ router.post(
         user_display_name: res.locals.dbUser.display_name,
       });
 
-      console.log(thread);
-      console.log("User Avatar", res.locals.user);
-
       const post = new Post({
         _id: new mongoose.Types.ObjectId(),
         content: requestPost.content,
         user_id: userId,
         thread_id: thread._id,
+        images: requestPost.images
       });
+      console.log(post);
 
       thread.save(async (error) => {
         if (error) {
@@ -164,6 +165,19 @@ router.get('/r/:thread_id', async (req, res) => {
   try {
     const posts = await Post.find({ thread_id: req.params.thread_id });
     res.json({ posts: posts });
+  } catch (e) {
+    throw e;
+  }
+});
+
+router.post('/r/upload', firebaseMiddleware.auth, upload.single("image"), (req, res) => {
+  try {
+    console.log(req.file);
+    if (req.file) {
+      var filename = (new Date).valueOf() + "-" + req.file.originalname;
+      console.log(filename);
+      res.json(req.file.path);
+    }
   } catch (e) {
     throw e;
   }
