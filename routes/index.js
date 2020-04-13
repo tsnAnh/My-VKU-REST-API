@@ -11,11 +11,25 @@ const firebaseMiddleware = require("express-firebase-middleware");
 const multer = require("multer");
 const { ObjectID } = require("mongodb");
 const admin = require("firebase-admin");
-const upload = multer({
-  dest: "../uploads/",
-});
 
-const fs = require("fs");
+const fs = require("fs-extra");
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, callback) => {
+      let dest = req.params.uid;
+      let path = 'public/images/' + dest;
+      if (!fs.existsSync(path)) {
+        fs.mkdirSync(path);
+      }
+      callback(null, path);
+    },
+    filename: (req, file, callback) => {
+      console.log(file);
+      callback(null, file.originalname);
+    }
+  })
+});
 
 router.get(
   "/user/is_user_registered",
@@ -170,13 +184,14 @@ router.get('/r/:thread_id', async (req, res) => {
   }
 });
 
-router.post('/r/upload', firebaseMiddleware.auth, upload.single("image"), (req, res) => {
+router.post('/r/upload/:uid', firebaseMiddleware.auth, upload.single("image"), async (req, res) => {
   try {
     console.log(req.file);
     if (req.file) {
-      var filename = (new Date).valueOf() + "-" + req.file.originalname;
-      console.log(filename);
-      res.json(req.file.path);
+      let filename = (new Date).valueOf() + "-" + req.file.originalname;
+      await fs.rename(req.file.path, req.file.destination + "/" + filename);
+      console.log("images" + "/" + filename);
+      res.json("images" + "/" + filename);
     }
   } catch (e) {
     throw e;

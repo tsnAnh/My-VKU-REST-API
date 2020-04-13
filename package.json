@@ -15,6 +15,7 @@
     "express-firebase-middleware": "^3.0.0",
     "firebase-admin": "^8.10.0",
     "fs": "0.0.1-security",
+    "fs-extra": "^9.0.0",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.3",
     "morgan": "^1.9.1",
