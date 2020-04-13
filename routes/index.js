@@ -18,7 +18,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
       let dest = req.params.uid;
-      let path = 'public/images/' + dest;
+      let path = '../public/images/' + dest;
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
       }
