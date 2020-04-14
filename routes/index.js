@@ -190,8 +190,8 @@ router.post('/r/upload/:uid', firebaseMiddleware.auth, upload.single("image"), a
     if (req.file) {
       let filename = (new Date).valueOf() + "-" + req.file.originalname;
       await fs.rename(req.file.path, req.file.destination + "/" + filename);
-      console.log("images" + "/" + filename);
-      res.json("images" + "/" + filename);
+      console.log("images" + "/" + res.locals.user.uid + "/" + filename);
+      res.json("images" + "/" + res.locals.user.uid + "/" + filename);
     }
   } catch (e) {
     throw e;
