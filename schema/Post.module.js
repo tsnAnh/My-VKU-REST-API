@@ -18,8 +18,8 @@ const PostSchema = new Schema({
         type: [String]
     },
     created_at: {
-        type: Date,
-        default: Date.now()
+        type: Number,
+        default: new Date().getTime()
     }
 });
 

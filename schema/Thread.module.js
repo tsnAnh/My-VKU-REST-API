@@ -24,12 +24,12 @@ const ThreadSchema = new Schema({
         ref: 'User'
     },
     created_at: {
-        type: Date,
-        default: Date.now()
+        type: Number,
+        default: new Date().getTime()
     },
     last_updated_on: {
-        type: Date,
-        default: Date.now()
+        type: Number,
+        default: new Date().getTime()
     },
     posts: {
         type: [{

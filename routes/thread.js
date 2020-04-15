@@ -8,7 +8,7 @@ router.get('/:forum_id', async (req, res) => {
     try {
         const threads = await Thread.find({
             forum_id: req.params.forum_id
-        });
+        }).sort({ created_at: -1 });
 
         res.json({
             threads: threads

@@ -104,6 +104,7 @@ router.post(
     try {
       const requestThread = req.body.thread;
       const requestPost = req.body.post;
+
       const userId = res.locals.dbUser._id;
 
       const thread = new Thread({
@@ -114,6 +115,7 @@ router.post(
         user_id: userId,
         user_avatar: res.locals.dbUser.photo_url,
         user_display_name: res.locals.dbUser.display_name,
+        last_updated_on: new Date().getTime()
       });
 
       const post = new Post({
@@ -121,9 +123,9 @@ router.post(
         content: requestPost.content,
         user_id: userId,
         thread_id: thread._id,
-        images: requestPost.images
+        images: requestPost.images,
+        created_at: new Date().getTime()
       });
-      console.log(post);
 
       thread.save(async (error) => {
         if (error) {
@@ -140,7 +142,7 @@ router.post(
               $push: {
                 threads: thread._id,
               },
-              last_updated_on: Date.now(),
+              last_updated_on: new Date().getTime(),
             }
           );
           await User.findOneAndUpdate(
@@ -177,7 +179,7 @@ router.post(
 
 router.get('/r/:thread_id', async (req, res) => {
   try {
-    const posts = await Post.find({ thread_id: req.params.thread_id });
+    const posts = await Post.find({ thread_id: req.params.thread_id }).sort({ created_at: 1 });
     res.json({ posts: posts });
   } catch (e) {
     throw e;
@@ -190,12 +192,28 @@ router.post('/r/upload/:uid', firebaseMiddleware.auth, upload.single("image"), a
     if (req.file) {
       let filename = (new Date).valueOf() + "-" + req.file.originalname;
       await fs.rename(req.file.path, req.file.destination + "/" + filename);
-      console.log("images" + "/" + res.locals.user.uid + "/" + filename);
       res.json("images" + "/" + res.locals.user.uid + "/" + filename);
     }
   } catch (e) {
     throw e;
   }
 });
+
+// router.get('/reset_db', async (req, res) => {
+//   try {
+//     await Forum.updateMany({}, {
+//       number_of_posts: 0,
+//       number_of_threads: 0,
+//       threads: [],
+//       last_updated_on: new Date().getTime()
+//     });
+
+//     await Thread.remove({});
+
+//     await Post.remove({});
+//   } catch (e) {
+//     throw e;
+//   }
+// })
 
 module.exports = router;

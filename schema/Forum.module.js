@@ -23,8 +23,8 @@ const forumSchema = new Schema({
         default: 0
     },
     last_updated_on: {
-        type: Date,
-        default: Date.now()
+        type: Number,
+        default: new Date().getTime()
     },
     threads: {
         type: [{
