@@ -115,7 +115,6 @@ router.post(
         user_id: userId,
         user_avatar: res.locals.dbUser.photo_url,
         user_display_name: res.locals.dbUser.display_name,
-        last_updated_on: new Date().getTime()
       });
 
       const post = new Post({
