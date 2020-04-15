@@ -126,9 +126,12 @@ router.post(
         _id: new mongoose.Types.ObjectId(),
         content: requestPost.content,
         user_id: userId,
+        user_display_name: res.locals.dbUser.display_name,
         thread_id: thread._id,
         images: requestPost.images,
-        created_at: timestamp
+        created_at: timestamp,
+        user_avatar: res.locals.dbUser.photo_url,
+        thread_title: requestThread.title
       });
 
       thread.save(async (error) => {

@@ -7,6 +7,8 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    user_display_name: String,
+    user_avatar: String,
     images: {
         type: [String]
     },
@@ -14,6 +16,7 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Thread'
     },
+    thread_title: String,
     edit_history: {
         type: [String]
     },
