@@ -115,6 +115,8 @@ router.post(
         user_id: userId,
         user_avatar: res.locals.dbUser.photo_url,
         user_display_name: res.locals.dbUser.display_name,
+        last_updated_on: requestThread.last_updated_on, 
+        created_at: requestThread.created_at,
       });
 
       const post = new Post({
@@ -123,7 +125,7 @@ router.post(
         user_id: userId,
         thread_id: thread._id,
         images: requestPost.images,
-        created_at: new Date().getTime()
+        created_at: requestPost.created_at
       });
 
       thread.save(async (error) => {
@@ -141,7 +143,7 @@ router.post(
               $push: {
                 threads: thread._id,
               },
-              last_updated_on: new Date().getTime(),
+              last_updated_on: requestThread.created_at,
             }
           );
           await User.findOneAndUpdate(
