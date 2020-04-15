@@ -107,6 +107,9 @@ router.post(
 
       const userId = res.locals.dbUser._id;
 
+      const timestamp = new Date().getTime();
+      console.log("Timestamp: ", timestamp);
+
       const thread = new Thread({
         _id: new mongoose.Types.ObjectId(),
         title: requestThread.title,
@@ -115,6 +118,8 @@ router.post(
         user_id: userId,
         user_avatar: res.locals.dbUser.photo_url,
         user_display_name: res.locals.dbUser.display_name,
+        last_updated_on: timestamp,
+        created_at: timestamp,
       });
 
       const post = new Post({
@@ -123,6 +128,7 @@ router.post(
         user_id: userId,
         thread_id: thread._id,
         images: requestPost.images,
+        created_at: timestamp
       });
 
       thread.save(async (error) => {
@@ -140,7 +146,7 @@ router.post(
               $push: {
                 threads: thread._id,
               },
-              last_updated_on: new Date().getTime()
+              last_updated_on: timestamp
             }
           );
           await User.findOneAndUpdate(
