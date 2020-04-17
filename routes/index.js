@@ -228,7 +228,7 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       content: requestPost.content,
       created_at: timestamp,
-      user_id: new mongoose.Types.ObjectId(),
+      user_id: user._id,
       user_display_name: user.display_name,
       user_avatar: user.user_avatar,
       images: requestPost.images,
