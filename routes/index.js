@@ -18,7 +18,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
       let dest = req.params.uid;
-      let path = '../public/images/' + dest;
+      let path = "../public/images/" + dest;
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
       }
@@ -27,8 +27,8 @@ const upload = multer({
     filename: (req, file, callback) => {
       console.log(file);
       callback(null, file.originalname);
-    }
-  })
+    },
+  }),
 });
 
 router.get(
@@ -36,6 +36,7 @@ router.get(
   firebaseMiddleware.auth,
   async (req, res) => {
     const user = await User.findOne({ uid: res.locals.user.uid });
+    console.log(user);
     if (user != null) {
       res.json(true);
     } else {
@@ -68,21 +69,23 @@ router.get("/user/:user_id", async (req, res) => {
 
 router.post("/user/new_user", firebaseMiddleware.auth, async (req, res) => {
   try {
-    admin
-      .auth()
-      .getUser(res.locals.user.uid)
-      .then((userRecord) => {
-        console.log(userRecord);
-        User.create({
-          uid: userRecord.uid,
-          display_name: userRecord.displayName,
-          photo_url: userRecord.photoURL,
-          email: userRecord.email,
-          is_user_verified: userRecord.emailVerified,
+      admin
+        .auth()
+        .getUser(res.locals.user.uid)
+        .then(async (userRecord) => {
+          console.log(userRecord);
+          const id = new mongoose.Types.ObjectId();
+          const user = await User.create({
+            _id: id,
+            uid: userRecord.uid,
+            display_name: userRecord.displayName,
+            photo_url: userRecord.photoURL,
+            email: userRecord.email,
+            is_user_verified: userRecord.emailVerified,
+          });
         });
-
+    
         res.json("success");
-      });
   } catch (e) {
     console.error(e);
     res.json("error");
@@ -131,7 +134,7 @@ router.post(
         images: requestPost.images,
         created_at: timestamp,
         user_avatar: res.locals.dbUser.photo_url,
-        thread_title: requestThread.title
+        thread_title: requestThread.title,
       });
 
       thread.save(async (error) => {
@@ -149,7 +152,7 @@ router.post(
               $push: {
                 threads: thread._id,
               },
-              last_updated_on: timestamp
+              last_updated_on: timestamp,
             }
           );
           await User.findOneAndUpdate(
@@ -184,36 +187,72 @@ router.post(
   }
 );
 
-router.get('/r/:thread_id', async (req, res) => {
+router.get("/r/:thread_id", async (req, res) => {
   try {
-    const posts = await Post.find({ thread_id: req.params.thread_id }).sort({ created_at: 1 });
+    const posts = await Post.find({ thread_id: req.params.thread_id }).sort({
+      created_at: 1,
+    });
     res.json({ posts: posts });
   } catch (e) {
     throw e;
   }
 });
 
-router.post('/r/upload/:uid', firebaseMiddleware.auth, upload.single("image"), async (req, res) => {
-  try {
-    console.log(req.file);
-    if (req.file) {
-      let filename = (new Date).valueOf() + "-" + req.file.originalname;
-      await fs.rename(req.file.path, req.file.destination + "/" + filename);
-      res.json("images" + "/" + res.locals.user.uid + "/" + filename);
+router.post(
+  "/r/upload/:uid",
+  firebaseMiddleware.auth,
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      console.log(req.file);
+      if (req.file) {
+        let filename = new Date().valueOf() + "-" + req.file.originalname;
+        await fs.rename(req.file.path, req.file.destination + "/" + filename);
+        res.json("images" + "/" + res.locals.user.uid + "/" + filename);
+      }
+    } catch (e) {
+      throw e;
     }
+  }
+);
+
+router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
+  try {
+    const requestPost = req.body;
+    
+    const timestamp = new Date().getTime();
+
+    const user = await User.findOne({ uid: res.locals.user.uid });
+    
+    const post = await Post.create({
+      _id: new mongoose.Types.ObjectId(),
+      content: requestPost.content,
+      created_at: timestamp,
+      user_id: new mongoose.Types.ObjectId(),
+      user_display_name: user.display_name,
+      user_avatar: user.user_avatar,
+      images: requestPost.images,
+      thread_id: requestPost.thread_id,
+      thread_title: requestPost.thread_title,
+    });
+
+    res.json(post);
   } catch (e) {
     throw e;
   }
 });
 
-router.get('/reset_db', async (req, res) => {
+router.get("/reset_db", async (req, res) => {
   try {
-    await Forum.updateMany({}, {
-      number_of_posts: 0,
-      number_of_threads: 0,
-      threads: [],
-      last_updated_on: new Date().getTime()
-    });
+    await Forum.updateMany(
+      {},
+      {
+        number_of_posts: 0,
+        number_of_threads: 0,
+        threads: [],
+        last_updated_on: new Date().getTime(),
+      }
+    );
 
     await Thread.remove({});
 
@@ -222,6 +261,6 @@ router.get('/reset_db', async (req, res) => {
   } catch (e) {
     throw e;
   }
-})
+});
 
 module.exports = router;
