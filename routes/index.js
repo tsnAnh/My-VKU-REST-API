@@ -236,6 +236,23 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
       thread_title: requestPost.thread_title,
     });
 
+    const thread = await Thread.findOneAndUpdate({ _id:requestPost.thread_id }, {
+      last_updated_on: timestamp,
+      $inc: {
+        number_of_posts: 1
+      },
+      $push: {
+        posts: post._id
+      },
+    });
+
+    await Forum.findOneAndUpdate({ _id: thread.forum_id }, {
+      last_updated_on: timestamp,
+      $inc: {
+        number_of_posts: 1
+      }
+    });
+
     res.json(post);
   } catch (e) {
     throw e;
