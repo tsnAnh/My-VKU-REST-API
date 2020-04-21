@@ -199,7 +199,7 @@ router.get("/r/:thread_id", async (req, res) => {
 });
 
 router.post(
-  "/r/upload",
+  "/r/upload/:uid",
   firebaseMiddleware.auth,
   upload.single("image"),
   async (req, res) => {
