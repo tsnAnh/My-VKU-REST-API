@@ -27,6 +27,7 @@ const PostSchema = new Schema({
     quoted: {
         type: Schema.Types.ObjectId,
     },
+    quoted_post: this,
     upvote: Number,
 });
 
