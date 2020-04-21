@@ -235,9 +235,14 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
       thread_id: requestPost.thread_id,
       thread_title: requestPost.thread_title,
       user_avatar: user.photo_url,
-      quoted: new mongoose.Types.ObjectId(requestPost.quoted),
-      quoted_post: await Post.findOne({ _id: requestPost.quoted })
     });
+
+    if (requestPost.quoted != null) {
+      await post.update({
+        quoted: new mongoose.Types.ObjectId(requestPost.quoted),
+        quoted_post: await Post.findOne({ _id: requestPost.quoted })
+      })
+    }
 
     const thread = await Thread.findOneAndUpdate({ _id:requestPost.thread_id }, {
       last_updated_on: timestamp,
