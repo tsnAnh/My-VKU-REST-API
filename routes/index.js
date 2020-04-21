@@ -297,7 +297,7 @@ router.put('/r/upvote', firebaseMiddleware.auth, async (req, res) => {
 
 router.get('/r/get/:post_id', async (req, res) => {
   try {
-    const post = await Post.findById(res.params.post_id);
+    const post = await Post.findById(req.params.post_id);
 
     res.json(post);
   } catch (e) {
