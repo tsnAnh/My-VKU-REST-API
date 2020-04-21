@@ -237,7 +237,7 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
       user_avatar: user.photo_url,
     });
 
-    if (requestPost.quoted != null) {
+    if (requestPost.quoted) {
       await post.update({
         quoted: new mongoose.Types.ObjectId(requestPost.quoted),
         quoted_post: await Post.findOne({ _id: requestPost.quoted })
