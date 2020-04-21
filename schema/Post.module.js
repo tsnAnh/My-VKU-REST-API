@@ -23,7 +23,11 @@ const PostSchema = new Schema({
     created_at: {
         type: Number,
         default: new Date().getTime()
-    }
+    },
+    quoted: {
+        type: Schema.Types.ObjectId,
+    },
+    upvote: Number,
 });
 
 module.exports = Post = mongoose.model('posts', PostSchema);

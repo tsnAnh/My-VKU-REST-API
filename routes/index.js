@@ -18,7 +18,7 @@ const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
       let dest = req.params.uid;
-      let path = "../public/images/" + dest;
+      let path = "/public/images/" + dest;
       if (!fs.existsSync(path)) {
         fs.mkdirSync(path);
       }
@@ -199,7 +199,7 @@ router.get("/r/:thread_id", async (req, res) => {
 });
 
 router.post(
-  "/r/upload/:uid",
+  "/r/upload",
   firebaseMiddleware.auth,
   upload.single("image"),
   async (req, res) => {
@@ -234,6 +234,7 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
       images: requestPost.images,
       thread_id: requestPost.thread_id,
       thread_title: requestPost.thread_title,
+      quoted: new mongoose.Types.ObjectId(requestPost.post._id)
     });
 
     const thread = await Thread.findOneAndUpdate({ _id:requestPost.thread_id }, {
@@ -275,6 +276,30 @@ router.get("/reset_db", async (req, res) => {
 
     await Post.remove({});
     res.send("OK xong roi anh");
+  } catch (e) {
+    throw e;
+  }
+});
+
+router.put('/r/upvote', firebaseMiddleware.auth, async (req, res) => {
+  try {
+    const post = await Post.findByIdAndUpdate({ _id: req.body.postId }, {
+      $inc: {
+        upvote: 1
+      }
+    });
+
+    res.json(post);
+  } catch (e) {
+    throw e;
+  }
+});
+
+router.get('/r/get/:post_id', async (req, res) => {
+  try {
+    const post = await Post.findById(res.params.post_id);
+
+    res.json(post);
   } catch (e) {
     throw e;
   }
