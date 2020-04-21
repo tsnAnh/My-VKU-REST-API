@@ -238,7 +238,7 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
     });
 
     if (requestPost.quoted) {
-      await post.update({
+      await post.updateOne({
         quoted: new mongoose.Types.ObjectId(requestPost.quoted),
         quoted_post: await Post.findOne({ _id: requestPost.quoted })
       })
