@@ -8,7 +8,7 @@ const Forum = require('./schema/Forum.module');
 
 const admin = require("firebase-admin");
 
-const serviceAccount = require("./vku-firebase-firebase-adminsdk-dcebe-5e574ada97.json");
+const serviceAccount = require("./vku-firebase-firebase-adminsdk-dcebe-0bbb740bfa.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
