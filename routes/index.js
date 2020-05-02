@@ -270,7 +270,11 @@ router.post("/r/new", firebaseMiddleware.auth, async (req, res) => {
 router.get("/reset_db", async (req, res) => {
   try {
     await Forum.updateMany(
-      {},
+      {
+        title: {
+          $nin: ["Android"]
+        }
+      },
       {
         number_of_posts: 0,
         number_of_threads: 0,
@@ -279,24 +283,16 @@ router.get("/reset_db", async (req, res) => {
       }
     );
 
-    await Thread.remove({});
-
-    await Post.remove({});
-    res.send("OK xong roi anh");
-  } catch (e) {
-    throw e;
-  }
-});
-
-router.put('/r/upvote', firebaseMiddleware.auth, async (req, res) => {
-  try {
-    const post = await Post.findByIdAndUpdate({ _id: req.body.postId }, {
-      $inc: {
-        upvote: 1
-      }
+    await Thread.deleteMany({ _id: {
+        $nin: ["5e9b2b8b083d68248b1397a3"]
+      } 
     });
 
-    res.json(post);
+    await Post.deleteMany({ _id: {
+      $nin: ["5e9b2b8b083d68248b1397a5"]
+    }
+  });
+    res.send("OK xong roi anh");
   } catch (e) {
     throw e;
   }

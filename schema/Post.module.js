@@ -28,7 +28,6 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
     },
     quoted_post: this,
-    upvote: Number,
 });
 
 module.exports = Post = mongoose.model('posts', PostSchema);
