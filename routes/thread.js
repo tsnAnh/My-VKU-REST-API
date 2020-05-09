@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const Thread = require('../schema/Thread.module');
-
 const threadController = require('../controller/thread');
 const firebaseMiddleware = require('express-firebase-middleware');
 
@@ -16,28 +14,8 @@ router.post(
     threadController.newThread
 );
 
-router.get('/:forum_id', async (req, res) => {
-    try {
-        const threads = await Thread.find({
-            forum_id: req.params.forum_id
-        }).sort({ created_at: -1 });
+router.get('/:forum_id', threadController.getThreadsByForumId);
 
-        res.json({
-            threads: threads
-        });
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-});
-
-router.get("/get/:thread_id", async (req, res) => {
-    try {
-        const thread = await Thread.findOne({ _id: req.params.thread_id });
-        res.json(thread);
-    } catch (e) {
-        throw e;
-    }
-});
+router.get("/get/:thread_id", threadController.getThreadById);
 
 module.exports = router;

@@ -87,3 +87,27 @@ exports.newThread = async (req, res) => {
         throw e;
     }
 }
+
+exports.getThreadsByForumId = async (req, res) => {
+    try {
+        const threads = await Thread.find({
+            forum_id: req.params.forum_id
+        }).sort({ created_at: -1 });
+
+        res.json({
+            threads: threads
+        });
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
+
+exports.getThreadById = async (req, res) => {
+    try {
+        const thread = await Thread.findOne({ _id: req.params.thread_id });
+        res.json(thread);
+    } catch (e) {
+        throw e;
+    }
+}
