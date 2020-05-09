@@ -40,7 +40,7 @@ exports.newThread = async (req, res) => {
             thread_title: requestThread.title,
         });
 
-        thread.save(async (error) => {
+        await thread.save(async (error) => {
             if (error) {
                 throw error;
             }
