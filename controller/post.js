@@ -4,6 +4,7 @@ const Forum = require('../schema/Forum.module');
 const User = require('../schema/User.module');
 
 const mongoose = require('mongoose');
+const fs = require('fs-extra');
 
 exports.getPostById = async (req, res) => {
     try {
