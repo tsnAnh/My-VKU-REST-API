@@ -1,8 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-// const middleware = require('../middleware/auth');
 const Thread = require('../schema/Thread.module');
+
+const threadController = require('../controller/thread');
+const firebaseMiddleware = require('express-firebase-middleware');
+
+router.get("/create", function (req, res) {
+    res.send("Hello There");
+});
+
+router.post(
+    "/create",
+    firebaseMiddleware.auth,
+    threadController.newThread
+);
 
 router.get('/:forum_id', async (req, res) => {
     try {

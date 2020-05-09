@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Forum = require('./schema/Forum.module');
 
 const admin = require("firebase-admin");
 
@@ -26,22 +25,18 @@ const connectDB = async () => {
             useFindAndModify: false
         });
         console.log("connected!");
-        // await Forum.create({
-        //     title: "iOS",
-        //     subtitle: "Mobile Operating System",
-        //     description: "Nơi thảo luận về iOS, các vấn đề về iOS, Swift, Objective C, xCode, tư vấn mua iPhone, Macbook...",
-        //     image: "https://thuthuatios.com/wp-content/uploads/2018/07/apple-logo.jpg"
-        // });
     } catch (e) {
         console.log(e);
     }
 };
-connectDB();
+connectDB().catch();
 
 const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/news');
 const forumRouter = require('./routes/forum');
 const threadRouter = require('./routes/thread');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -52,8 +47,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/news', newsRouter);
-app.use('/forum', forumRouter);
+app.use('/n', newsRouter);
+app.use('/f', forumRouter);
 app.use('/t', threadRouter);
+app.use('/p', postRouter);
+app.use('/u', userRouter);
 
 module.exports = app;

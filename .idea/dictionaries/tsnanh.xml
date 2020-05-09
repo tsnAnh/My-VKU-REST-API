@@ -1,3 +1,8 @@
 <component name="ProjectDictionaryState">
-  <dictionary name="tsnanh" />
+  <dictionary name="tsnanh">
+    <words>
+      <w>axios</w>
+      <w>multer</w>
+    </words>
+  </dictionary>
 </component>
