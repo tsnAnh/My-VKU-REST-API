@@ -1,6 +1,6 @@
 const Forum = require('../schema/Forum.module');
 
-exports.getForums = async (req, res) => {
+const getForums = async (req, res) => {
     try {
         const forums = await Forum.find({});
         res.json({
@@ -12,7 +12,7 @@ exports.getForums = async (req, res) => {
     }
 }
 
-exports.getForumById = async (req, res) => {
+const getForumById = async (req, res) => {
     const idForum = req.params.idForum;
     try {
         const forum = await Forum.findById(idForum);
@@ -23,3 +23,7 @@ exports.getForumById = async (req, res) => {
         throw e;
     }
 }
+
+module.exports = {
+    getForums, getForumById
+};

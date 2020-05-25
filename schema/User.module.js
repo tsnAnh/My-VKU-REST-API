@@ -24,7 +24,12 @@ const UserSchema = new Schema({
             ref: 'Post'
         }],
         default: []
-    }
+    },
+    notifications: {
+        type: Schema.Types.ObjectId,
+        ref: 'Notification'
+    },
+    role: Number
 });
 
 module.exports = User = mongoose.model('users', UserSchema);

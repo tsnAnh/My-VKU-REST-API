@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Forum = require('../schema/Forum.module');
 
 const URL = 'http://daotao.sict.udn.vn';
 

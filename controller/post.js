@@ -2,11 +2,14 @@ const Post = require('../schema/Post.module');
 const Thread = require('../schema/Thread.module');
 const Forum = require('../schema/Forum.module');
 const User = require('../schema/User.module');
+const NotificationObject = require('../schema/NotificationObject.module');
+const NotificationChange = require('../schema/NotificationChange.module');
+const Notification = require('../schema/Notification.module');
 
 const mongoose = require('mongoose');
 const fs = require('fs-extra');
 
-exports.getPostById = async (req, res) => {
+const getPostById = async (req, res) => {
     try {
         const post = await Post.findById(req.params.post_id);
 
@@ -16,7 +19,7 @@ exports.getPostById = async (req, res) => {
     }
 }
 
-exports.newPost = async (req, res) => {
+const newPost = async (req, res) => {
     try {
         const requestPost = req.body;
 
@@ -37,10 +40,19 @@ exports.newPost = async (req, res) => {
         });
 
         if (requestPost.quoted) {
+            const quotedPost = await Post.findOne({_id: requestPost.quoted});
             await post.updateOne({
                 quoted: new mongoose.Types.ObjectId(requestPost.quoted),
-                quoted_post: await Post.findOne({_id: requestPost.quoted})
-            })
+                quoted_post: quotedPost
+            });
+            const notification = await Notification.findOne({ user_id: quotedPost.user_id });
+            if (user._id !== quotedPost.user_id) {
+                await NotificationObject.create({
+                    notification_id: notification._id,
+                    object: post,
+                    notification_changes: []
+                });
+            }
         }
 
         const thread = await Thread.findOneAndUpdate({_id: requestPost.thread_id}, {
@@ -66,7 +78,7 @@ exports.newPost = async (req, res) => {
     }
 }
 
-exports.uploadPostImage = async (req, res) => {
+const uploadPostImage = async (req, res) => {
     try {
         if (req.file) {
             let filename = new Date().valueOf() + "-" + req.file.originalname;
@@ -78,7 +90,7 @@ exports.uploadPostImage = async (req, res) => {
     }
 }
 
-exports.getPostsByThreadId = async (req, res) => {
+const getPostsByThreadId = async (req, res) => {
     try {
         const posts = await Post.find({thread_id: req.params.thread_id}).sort({
             created_at: 1,
@@ -88,3 +100,7 @@ exports.getPostsByThreadId = async (req, res) => {
         throw e;
     }
 }
+
+module.exports = {
+    getPostById, newPost, getPostsByThreadId, uploadPostImage
+};

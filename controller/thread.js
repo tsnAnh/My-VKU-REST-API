@@ -5,7 +5,7 @@ const User = require('../schema/User.module');
 const Forum = require('../schema/Forum.module');
 const Post = require('../schema/Post.module');
 
-exports.newThread = async (req, res) => {
+const newThread = async (req, res) => {
     try {
         const user = await User.findOne({uid: res.locals.user.uid});
         const requestThread = req.body.thread;
@@ -89,7 +89,7 @@ exports.newThread = async (req, res) => {
     }
 }
 
-exports.getThreadsByForumId = async (req, res) => {
+const getThreadsByForumId = async (req, res) => {
     try {
         const threads = await Thread.find({
             forum_id: req.params.forum_id
@@ -104,11 +104,20 @@ exports.getThreadsByForumId = async (req, res) => {
     }
 }
 
-exports.getThreadById = async (req, res) => {
+const getThreadById = async (req, res) => {
     try {
-        const thread = await Thread.findOne({ _id: req.params.thread_id });
+        const thread = await Thread.findOneAndUpdate({ _id: req.params.thread_id }, {
+            $inc: {
+                number_of_views: 1
+            }
+        });
+
         res.json(thread);
     } catch (e) {
         throw e;
     }
 }
+
+module.exports = {
+     getThreadById, getThreadsByForumId, newThread
+};

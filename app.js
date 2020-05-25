@@ -40,6 +40,22 @@ const userRouter = require('./routes/user');
 
 const app = express();
 
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+const Notification = require('./schema/Notification.module');
+const NotificationObject = require('./schema/NotificationObject.module');
+
+io.on('connection', (socket) => {
+    socket.on('fetch notification', () => {
+        console.log("concacneeeeee")
+        const notificationEmitter = Notification.watch();
+        notificationEmitter.on('change', data => {
+            socket.emit('notification', 'con cac');
+        });
+    });
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

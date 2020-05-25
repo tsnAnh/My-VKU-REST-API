@@ -14,4 +14,6 @@ router.get("/:user_id", userController.getUserById);
 
 router.post("/new_user", firebaseMiddleware.auth, userController.newUser);
 
+router.get('/n', userController.notification);
+
 module.exports = router;

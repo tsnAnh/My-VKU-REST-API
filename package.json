@@ -25,6 +25,7 @@
     "slugify": "^1.4.0"
   },
   "devDependencies": {
-    "mongoose-long": "^0.2.1"
+    "mongoose-long": "^0.2.1",
+    "socket.io": "^2.3.0"
   }
 }
