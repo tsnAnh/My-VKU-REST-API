@@ -45,7 +45,7 @@ const newPost = async (req, res) => {
                 quoted: new mongoose.Types.ObjectId(requestPost.quoted),
                 quoted_post: quotedPost
             });
-            const notification = await Notification.findOne({ user_id: quotedPost.user_id });
+            const notification = await Notification.findOne({user_id: quotedPost.user_id});
             if (user._id !== quotedPost.user_id) {
                 await NotificationObject.create({
                     notification_id: notification._id,
@@ -91,12 +91,28 @@ const uploadPostImage = async (req, res) => {
 }
 
 const getPostsByThreadId = async (req, res) => {
+    const {page = 1, limit = 10} = req.query;
+
     try {
-        const posts = await Post.find({thread_id: req.params.thread_id}).sort({
-            created_at: 1,
+        const posts = await Post.find({thread_id: req.params.thread_id})
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .sort({
+                created_at: 1,
+            });
+
+        const count = await Post.countDocuments();
+
+        res.json({
+            posts: posts,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
         });
-        res.json({posts: posts});
     } catch (e) {
+        res.json({
+            status: "error",
+            msg: e
+        });
         throw e;
     }
 }
