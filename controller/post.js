@@ -95,18 +95,19 @@ const getPostsByThreadId = async (req, res) => {
 
     try {
         const posts = await Post.find({thread_id: req.params.thread_id})
-            .limit(limit)
+            .limit(limit * 1)
             .skip((page - 1) * limit)
             .sort({
                 created_at: 1,
-            });
+            })
+            .exec();
 
         const count = await Post.countDocuments();
 
         res.json({
-            posts: posts,
+            posts,
             totalPages: Math.ceil(count / limit),
-            currentPage: page
+            currentPage: page * 1
         });
     } catch (e) {
         res.json({
