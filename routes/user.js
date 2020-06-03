@@ -4,16 +4,8 @@ const firebaseMiddleware = require('express-firebase-middleware');
 
 const userController = require('../controller/user');
 
-router.get(
-    "/is_user_registered",
-    firebaseMiddleware.auth,
-    userController.getUserByUid
-);
-
-router.get("/:user_id", userController.getUserById);
-
-router.post("/new_user", firebaseMiddleware.auth, userController.newUser);
-
-// router.get('/n', userController.notification);
+router.get("/:userId", userController.getUser);
+router.get("/has-user", userController.hasUser);
+router.post("/sign-up", userController.signUp)
 
 module.exports = router;

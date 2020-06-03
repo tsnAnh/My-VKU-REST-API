@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Thread = require('../schema/Thread.module');
 const User = require('../schema/User.module');
 const Forum = require('../schema/Forum.module');
-const Post = require('../schema/Post.module');
+const Post = require('../schema/Reply.module');
 
 const newThread = async (req, res) => {
     try {

@@ -35,26 +35,10 @@ const indexRouter = require('./routes/index');
 const newsRouter = require('./routes/news');
 const forumRouter = require('./routes/forum');
 const threadRouter = require('./routes/thread');
-const postRouter = require('./routes/post');
+const replyRouter = require('./routes/reply');
 const userRouter = require('./routes/user');
 
 const app = express();
-
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-
-const Notification = require('./schema/Notification.module');
-const NotificationObject = require('./schema/NotificationObject.module');
-
-io.on('connection', (socket) => {
-    socket.on('fetch notification', () => {
-        console.log("concacneeeeee")
-        const notificationEmitter = Notification.watch();
-        notificationEmitter.on('change', data => {
-            socket.emit('notification', 'con cac');
-        });
-    });
-});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -66,7 +50,7 @@ app.use('/', indexRouter);
 app.use('/n', newsRouter);
 app.use('/f', forumRouter);
 app.use('/t', threadRouter);
-app.use('/p', postRouter);
+app.use('/r', replyRouter);
 app.use('/u', userRouter);
 
 module.exports = app;

@@ -1,17 +1,14 @@
-const Post = require('../schema/Post.module');
+const Reply = require('../schema/Reply.module');
 const Thread = require('../schema/Thread.module');
 const Forum = require('../schema/Forum.module');
 const User = require('../schema/User.module');
-const NotificationObject = require('../schema/NotificationObject.module');
-const NotificationChange = require('../schema/NotificationChange.module');
-const Notification = require('../schema/Notification.module');
 
 const mongoose = require('mongoose');
 const fs = require('fs-extra');
 
 const getPostById = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.post_id);
+        const post = await Reply.findById(req.params.post_id);
 
         res.json(post);
     } catch (e) {
@@ -27,7 +24,7 @@ const newPost = async (req, res) => {
 
         const user = await User.findOne({uid: res.locals.user.uid});
 
-        const post = await Post.create({
+        const post = await Reply.create({
             _id: new mongoose.Types.ObjectId(),
             content: requestPost.content,
             created_at: timestamp,
@@ -40,19 +37,11 @@ const newPost = async (req, res) => {
         });
 
         if (requestPost.quoted) {
-            const quotedPost = await Post.findOne({_id: requestPost.quoted});
+            const quotedPost = await Reply.findOne({_id: requestPost.quoted});
             await post.updateOne({
                 quoted: new mongoose.Types.ObjectId(requestPost.quoted),
                 quoted_post: quotedPost
             });
-            const notification = await Notification.findOne({user_id: quotedPost.user_id});
-            if (user._id !== quotedPost.user_id) {
-                await NotificationObject.create({
-                    notification_id: notification._id,
-                    object: post,
-                    notification_changes: []
-                });
-            }
         }
 
         const thread = await Thread.findOneAndUpdate({_id: requestPost.thread_id}, {
@@ -94,7 +83,7 @@ const getPostsByThreadId = async (req, res) => {
     const {page = 1, limit = 10} = req.query;
 
     try {
-        const posts = await Post.find({thread_id: req.params.thread_id})
+        const posts = await Reply.find({thread_id: req.params.thread_id})
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .sort({
@@ -102,7 +91,7 @@ const getPostsByThreadId = async (req, res) => {
             })
             .exec();
 
-        const count = await Post.countDocuments();
+        const count = await Reply.countDocuments();
 
         res.json({
             posts,

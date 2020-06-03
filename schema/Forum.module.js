@@ -14,15 +14,15 @@ const forumSchema = new Schema({
     image: {
         type: String
     },
-    number_of_threads: {
+    numberOfThreads: {
         type: Number,
         default: 0
     },
-    number_of_posts: {
+    numberOfReplies: {
         type: Number,
         default: 0
     },
-    last_updated_on: {
+    lastUpdatedOn: {
         type: Number,
         default: new Date().getTime()
     },
@@ -34,4 +34,4 @@ const forumSchema = new Schema({
     }
 });
 
-module.exports = Forum = mongoose.model('forums', forumSchema);
+module.exports = Forum = mongoose.model('forum', forumSchema);

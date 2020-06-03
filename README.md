@@ -1,10 +1,10 @@
-# VKU RESTful Service
+# VKU RESTFul Service
 
 ## Installation
 
 Make sure you have Nodejs and npm installed on your computer
 
-Use the package manager npm to install.
+Use the node package manager to install.
 
 ```bash
 npm install

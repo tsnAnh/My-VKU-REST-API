@@ -1,33 +1,29 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
+const ReplySchema = new Schema({
     content: String,
-    user_id: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    user_display_name: String,
-    user_avatar: String,
-    images: {
-        type: [String]
-    },
-    thread_id: {
+    userDisplayName: String,
+    userAvatar: String,
+    images: [String],
+    threadId: {
         type: Schema.Types.ObjectId,
         ref: 'Thread'
     },
-    thread_title: String,
-    edit_history: {
-        type: [String]
-    },
-    created_at: {
+    threadTitle: String,
+    editHistory: [String],
+    createdAt: {
         type: Number,
         default: new Date().getTime()
     },
     quoted: {
         type: Schema.Types.ObjectId,
     },
-    quoted_post: this,
+    quotedReply: this,
 });
 
-module.exports = Post = mongoose.model('posts', PostSchema);
+module.exports = Reply = mongoose.model('reply', ReplySchema);

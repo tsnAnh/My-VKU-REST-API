@@ -1,62 +1,70 @@
-const mongoose = require('mongoose');
-const admin = require('firebase-admin');
+import mongoose from "mongoose";
+import admin from "firebase-admin";
+import User from "../schema/User.module";
 
-const User = require('../schema/User.module');
-
-const getUserByUid = async (req, res) => {
-    const user = await User.findOne({uid: res.locals.user.uid});
-    console.log(user);
-    if (user != null) {
-        res.json(true);
-    } else {
-        res.json(false);
-    }
-}
-
-const getUserById = async (req, res) => {
+const signUp = async (req, res) => {
+    const token = req.headers["Authorization"];
     try {
-        const user = await User.findOne({
-            _id: req.params.user_id,
-        });
+        const decodedIdToken = await admin.auth()
+            .verifyIdToken(token, true);
+        const userRecord = await admin.auth().getUser(decodedIdToken.uid);
 
-        res.json(user);
+        const newUser = new User({
+            _id: userRecord.uid,
+            uid: userRecord.uid,
+            displayName: userRecord.displayName,
+            photoUrl: userRecord.photoURL,
+            email: userRecord.email,
+            emailVerified: userRecord.emailVerified,
+        });
+        await newUser.save();
+
+        await res.json(newUser);
     } catch (e) {
-        console.error(e);
-        res.status(400).json("error");
+        await res.json({
+            msg: "Unexpected error",
+            error: e
+        });
+        throw e;
+    }
+};
+
+const hasUser = async (req, res) => {
+    const id = req.body;
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            await res.json({
+                hasUser: false,
+            });
+        } else {
+            await res.json({
+                hasUser: true,
+            });
+        }
+    } catch (e) {
+        await res.json({
+            msg: "Unexpected Error",
+            error: e
+        });
         throw e;
     }
 }
 
-const newUser = async (req, res) => {
+const getUser = async (req, res) => {
+    const id = req.body;
     try {
-        const userRecord = await admin
-            .auth()
-            .getUser(res.locals.user.uid)
-
-        console.log(userRecord);
-        const id = new mongoose.Types.ObjectId();
-        const user = await User.create({
-            _id: id,
-            uid: userRecord.uid,
-            display_name: userRecord.displayName,
-            photo_url: userRecord.photoURL,
-            email: userRecord.email,
-            is_user_verified: userRecord.emailVerified,
-        });
-        const notification = await Notification.create({
-            user_id: user._id,
-            notifications_objects: []
-        });
-        await notification.save();
-
-        res.json("success");
+        const user = await User.findById(id);
+        await res.json(user);
     } catch (e) {
-        console.error(e);
-        res.json("error");
+        await res.json({
+            msg: "Unexpected error",
+            error: e
+        });
         throw e;
     }
 }
 
 module.exports = {
-    getUserById, getUserByUid, newUser
+    signUp, hasUser, getUser
 };

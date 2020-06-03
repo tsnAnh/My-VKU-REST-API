@@ -1,6 +1,7 @@
+import replyController from "../controller/reply";
+
 const express = require('express');
 const router = express.Router();
-const postController = require('../controller/post');
 
 const firebaseMiddleware = require('express-firebase-middleware');
 
@@ -23,14 +24,14 @@ const upload = multer({
     }),
 });
 
-router.get('/get/:post_id', postController.getPostById);
-router.post("/new", firebaseMiddleware.auth, postController.newPost);
+router.get('/get/:post_id', replyController.getPostById);
+router.post("/new", firebaseMiddleware.auth, replyController.newPost);
 router.post(
     "/upload/:uid",
     firebaseMiddleware.auth,
     upload.single("image"),
-    postController.uploadPostImage
+    replyController.uploadPostImage
 );
-router.get("/:thread_id", postController.getPostsByThreadId);
+router.get("/:thread_id", replyController.getPostsByThreadId);
 
 module.exports = router;

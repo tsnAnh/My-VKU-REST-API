@@ -5,43 +5,43 @@ const ThreadSchema = new Schema({
     title: {
         type: String
     },
-    forum_id: {
+    forumId: {
         type: Schema.Types.ObjectId,
         ref: 'Forum'
     },
-    user_display_name: String,
-    user_avatar: String,
-    number_of_posts: {
+    userDisplayName: String,
+    userAvatar: String,
+    numberOfReplies: {
         type: Number,
         default: 1
     },
-    number_of_views: {
+    numberOfViews: {
         type: Number,
         default: 0
     },
-    user_id: {
+    userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    created_at: {
+    createdAt: {
         type: Number,
         default: new Date().getTime()
     },
-    last_updated_on: {
+    lastUpdatedOn: {
         type: Number,
         default: new Date().getTime()
     },
     posts: {
         type: [{
             type: Schema.Types.ObjectId,
-            ref: 'Post'
+            ref: 'Reply'
         }],
         default: []
     },
-    edit_history: {
+    editHistory: {
         type: [String],
         default: []
     }
 });
 
-module.exports = Thread = mongoose.model('threads', ThreadSchema);
+module.exports = Thread = mongoose.model('thread', ThreadSchema);
