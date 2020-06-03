@@ -27,6 +27,7 @@ const signUp = async (req, res) => {
 
 const hasUser = async (req, res) => {
     const id = req.body;
+    console.log(id);
     try {
         const user = await User.findById(id);
         if (!user) {
