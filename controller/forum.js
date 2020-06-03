@@ -24,6 +24,21 @@ const getForumById = async (req, res) => {
     }
 }
 
+const createForum = async (req, res) => {
+    try {
+        const forum = new Forum(req.body);
+
+        await forum.save();
+
+        res.json(forum);
+    } catch (e) {
+        res.json({
+            msg: "Sonething went wrong!",
+            error: e
+        });
+    }
+}
+
 module.exports = {
     getForums, getForumById
 };

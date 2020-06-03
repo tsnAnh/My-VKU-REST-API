@@ -25,7 +25,8 @@ const UserSchema = new Schema({
             ref: "Reply"
         }],
         default: []
-    }
+    },
+    role: Number
 });
 
 module.exports = mongoose.model("user", UserSchema);

@@ -30,14 +30,27 @@ const hasUser = async (req, res) => {
     try {
         const user = await User.findById(id);
         if (!user) {
-            await res.json({
-                hasUser: false,
+            const userRecord = await admin.auth().getUser(id);
+
+            const newUser = new User({
+                _id: userRecord.uid,
+                uid: userRecord.uid,
+                displayName: userRecord.displayName,
+                photoUrl: userRecord.photoURL,
+                email: userRecord.email,
+                emailVerified: userRecord.emailVerified,
             });
-        } else {
+            await newUser.save();
+
             await res.json({
-                hasUser: true,
+                user: newUser,
+                isNew: true
             });
         }
+        await res.json({
+            user,
+            isNew: false
+        });
     } catch (e) {
         await res.json({
             msg: "Unexpected Error",
