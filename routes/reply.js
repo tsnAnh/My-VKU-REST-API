@@ -1,4 +1,4 @@
-import replyController from "../controller/reply";
+const replyController = require("../controller/reply");
 
 const express = require('express');
 const router = express.Router();

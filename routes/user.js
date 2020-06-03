@@ -6,6 +6,6 @@ const userController = require('../controller/user');
 
 router.get("/:userId", userController.getUser);
 router.get("/has-user", userController.hasUser);
-router.post("/sign-up", userController.signUp)
+router.post("/sign-up", firebaseMiddleware.auth, userController.signUp)
 
 module.exports = router;

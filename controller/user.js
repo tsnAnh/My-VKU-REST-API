@@ -1,13 +1,9 @@
-import mongoose from "mongoose";
-import admin from "firebase-admin";
-import User from "../schema/User.module";
+const admin = require("firebase-admin");
+const User = require("../schema/User.module");
 
 const signUp = async (req, res) => {
-    const token = req.headers["Authorization"];
     try {
-        const decodedIdToken = await admin.auth()
-            .verifyIdToken(token, true);
-        const userRecord = await admin.auth().getUser(decodedIdToken.uid);
+        const userRecord = await admin.auth().getUser(res.locals.user.uid);
 
         const newUser = new User({
             _id: userRecord.uid,
