@@ -40,5 +40,5 @@ const createForum = async (req, res) => {
 }
 
 module.exports = {
-    getForums, getForumById
+    getForums, getForumById, createForum
 };
