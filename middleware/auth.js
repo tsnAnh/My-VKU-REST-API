@@ -1,17 +1,26 @@
-const admin = require('firebase-admin');
-const mongoose = require('mongoose');
+const { OAuth2Client } = require("google-auth-library");
+const CLIENT_ID = process.env.CLIENT_ID;
+const client = new OAuth2Client(CLIENT_ID);
 
-const User = require('../schema/User.module');
-
-exports.auth = (req, res, next) => {
-    const idToken = req.headers["Authentication"];
-    admin.auth().verifyIdToken(idToken, true).then((decodedIdToken) => {
-        console.log("Verified");
-        const user = User.findOne({ uid: decodedIdToken.uid });
-        res.locals.user = user;
-        res.locals.uid = decodedIdToken.uid;
-        next();
-    }).catch(() => {
-        console.log("Unauthorized");
+exports.authGoogle = async (req, res, next) => {
+  const token = req.headers["Authentication"];
+  // Check if not token
+  if (!token || token === "undefined") {
+    return res.status(401).json({ msg: "Token is not valid" });
+  }
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: CLIENT_ID,
+      // Specify the CLIENT_ID of the app that accesses the backend
+      // Or, if multiple clients access the backend:
+      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
+
+    req.locals.userGG = ticket.getPayload();
+    next();
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ msg: "Token is not valid" });
+  }
 };

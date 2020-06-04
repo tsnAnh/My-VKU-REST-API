@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const firebaseMiddleware = require('express-firebase-middleware');
 
-const userController = require('../controller/user');
+const userController = require("../controller/user.controller");
 
 router.get("/:userId", userController.getUser);
-router.post("/has-user", userController.hasUser);
+router.post("/has-user", userController.loadUser);
 // router.post("/sign-up", firebaseMiddleware.auth, userController.signUp)
 
 module.exports = router;

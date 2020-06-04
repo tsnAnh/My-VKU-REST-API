@@ -16,6 +16,7 @@
     "firebase-admin": "^8.10.0",
     "fs": "0.0.1-security",
     "fs-extra": "^9.0.0",
+    "google-auth-library": "^6.0.1",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.3",
     "morgan": "^1.9.1",
@@ -25,6 +26,7 @@
     "slugify": "^1.4.0"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "mongoose-long": "^0.2.1",
     "socket.io": "^2.3.0"
   }
