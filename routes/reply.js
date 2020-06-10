@@ -30,7 +30,7 @@ router.post(
   "/upload/:uid",
   firebaseMiddleware.auth,
   upload.single("image"),
-  replyController.uploadPostImage
+  replyController.uploadPostImage 
 );
 router.get("/:thread_id", replyController.getPostsByThreadId);
 
