@@ -1,4 +1,4 @@
-const replyController = require("../controller/reply.controller");
+const replyController = require("../../controller/reply.controller");
 
 const express = require("express");
 const router = express.Router();
@@ -30,7 +30,7 @@ router.post(
   "/upload/:uid",
   firebaseMiddleware.auth,
   upload.single("image"),
-  replyController.uploadPostImage 
+  replyController.uploadPostImage
 );
 router.get("/:thread_id", replyController.getPostsByThreadId);
 

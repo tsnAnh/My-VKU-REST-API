@@ -3,57 +3,28 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 
-const admin = require("firebase-admin");
-
-const serviceAccount = require("./vku-firebase-firebase-adminsdk-dcebe-0bbb740bfa.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://vku-firebase.firebaseio.com",
-});
-
-const uri =
-  "mongodb+srv://tsnanh:tsnanh@cluster0-ecgyh.gcp.mongodb.net/VKU?retryWrites=true&w=majority";
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    });
-    console.log("connected!");
-  } catch (e) {
-    console.log(e);
-  }
-};
-connectDB().catch();
-
-const indexRouter = require("./routes/index");
-const newsRouter = require("./routes/news");
-const forumRouter = require("./routes/forum");
-const threadRouter = require("./routes/thread");
-const replyRouter = require("./routes/reply");
-const userRouter = require("./routes/user");
+//CONNECT DB
+const connectDB = require("./config/db");
+connectDB();
 
 const app = express();
 
-app.use(logger("dev"));
+//CONFIG
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/n", newsRouter);
-app.use("/f", forumRouter);
-app.use("/t", threadRouter);
-app.use("/r", replyRouter);
-app.use("/u", userRouter);
+//DEFINE ROUTE
+app.get("/", (req, res) => res.send("API running"));
+// app.use("/news", require("./routes/api/news.api"));
+app.use("/api/forum", require("./routes/api/forum.api"));
+// app.use("/thread", require("./routes/api/thread.api"));
+// app.use("/reply", require("./routes/api/reply.api"));
+app.use("/api/user", require("./routes/api/user.api"));
 
-module.exports = app;
+//FOR DEVELOPMENT
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// module.exports = app;

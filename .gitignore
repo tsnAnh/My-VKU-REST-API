@@ -1,3 +1,5 @@
 # Project exclude paths
 /node_modules/
 /vku-firebase-firebase-adminsdk-dcebe-5e574ada97.json
+
+.env

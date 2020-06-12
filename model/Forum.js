@@ -26,12 +26,12 @@ const forumSchema = new Schema({
         type: Number,
         default: new Date().getTime()
     },
-    threads: {
-        type: [{
-            type: Schema.Types.ObjectID,
-            ref: 'Thread'
-        }]
-    }
+    // threads: {
+    //     type: [{
+    //         type: Schema.Types.ObjectID,
+    //         ref: 'Thread'
+    //     }]
+    // }
 });
 
 module.exports = Forum = mongoose.model('forum', forumSchema);

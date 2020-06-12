@@ -1,22 +1,24 @@
-const User = require("../schema/User.module");
+const User = require("../model/User");
 
-const loadUser = async (req, res) => {
+const controller = {};
+
+//LOAD USER
+controller.login = async (req, res) => {
   const userGG = req.locals.userGG;
-
   try {
     const user = await User.findOne({
       //sub là id user của GG
-      uid: userGG["sub"],
+      uidGG: userGG["sub"],
     });
     if (!user) {
       const newUser = new User({
-        uid: userGG["sub"],
+        uidGG: userGG["sub"],
         displayName: userGG["name"],
         photoUrl: userGG["picture"],
         email: userGG["email"],
-        // emailVerified: userRecord.emailVerified,
       });
       await newUser.save();
+
       res.json({
         user: newUser,
         isNew: true,
@@ -33,11 +35,12 @@ const loadUser = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
-  const id = req.body;
+//GET INFOR OF USER
+controller.loadUser = async (req, res) => {
+  const uid = req.params.userId;
   try {
-    const user = await User.findById(id);
-    await res.json(user);
+    const user = await User.findById(uid);
+    res.json(user);
   } catch (e) {
     await res.json({
       msg: "Unexpected error",
@@ -47,7 +50,4 @@ const getUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  loadUser,
-  getUser,
-};
+module.exports = controller;

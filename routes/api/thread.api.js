@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const threadController = require("../controller/thread.controller");
+const threadController = require("../../controller/thread.controller");
 const firebaseMiddleware = require("express-firebase-middleware");
 
+// @route   PUT api/cards/:id
+// @desc    Update card
+// @access  Private
 router.get("/create", function (req, res) {
   res.send("Hello There");
 });
