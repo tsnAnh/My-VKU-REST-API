@@ -1,20 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const threadController = require("../../controller/thread.controller");
-const firebaseMiddleware = require("express-firebase-middleware");
+//CONTROLLER
+const controller = require("../../controller/thread.controller");
 
-// @route   PUT api/cards/:id
-// @desc    Update card
+//MIDDLEWARE
+const auth = require("../../controller/forum.controller");
+
+// @route   GET api/thread/:idThread
+// @desc    Get a thread by id
+// @access  Public
+router.get("/:idThread", controller.getThreadById);
+
+// @route   POST api/thread/
+// @desc    Create a thread
 // @access  Private
-router.get("/create", function (req, res) {
-  res.send("Hello There");
-});
+router.post("/", controller.createThread);
 
-router.post("/create", firebaseMiddleware.auth, threadController.newThread);
-
-router.get("/:forum_id", threadController.getThreadsByForumId);
-
-router.get("/get/:thread_id", threadController.getThreadById);
+// @route   GET api/thread/reply/:idThread
+// @desc    Get all replies of of speacified thread
+// @access  Public
+router.get("/reply/:idThread", controller.getRepliesByThreadId);
 
 module.exports = router;

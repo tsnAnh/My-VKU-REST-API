@@ -1,13 +1,66 @@
 const mongoose = require("mongoose");
 
+//MODEL
 const Thread = require("../model/Thread");
 const User = require("../model/User");
 const Forum = require("../model/Forum");
 const Post = require("../model/Reply");
 
-const newThread = async (req, res) => {
+const controller = {};
+
+//GET INFO OF A THREAD
+controller.getThreadById = async (req, res) => {
   try {
-    const user = await User.findOne({ uid: res.locals.user.uid });
+    const thread = await Thread.findOneAndUpdate(
+      { _id: req.params.thread_id },
+      {
+        $inc: {
+          number_of_views: 1,
+        },
+      }
+    );
+
+    res.json(thread);
+  } catch (e) {
+    throw e;
+  }
+};
+
+// GET ALL REPLIES OF A THREAD
+controller.getRepliesByThreadId = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  try {
+    const posts = await Reply.find({ thread_id: req.params.thread_id })
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({
+        created_at: 1,
+      })
+      .exec();
+
+    const count = await Reply.countDocuments();
+
+    res.json({
+      posts,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page * 1,
+    });
+  } catch (e) {
+    res.json({
+      status: "error",
+      msg: e,
+    });
+    throw e;
+  }
+};
+
+// CREATE THREAD
+controller.createThread = async (req, res) => {
+  const userGG = req.userGG;
+
+  try {
+    const user = await User.findOne({ uidGG: userGG["sub"] });
     const requestThread = req.body.thread;
     const requestPost = req.body.post;
 
@@ -15,7 +68,7 @@ const newThread = async (req, res) => {
 
     const timestamp = new Date().getTime();
     console.log("Timestamp: ", timestamp);
-
+    //TODO: CREATE THREAD
     const thread = new Thread({
       _id: new mongoose.Types.ObjectId(),
       title: requestThread.title,
@@ -26,18 +79,6 @@ const newThread = async (req, res) => {
       user_display_name: user.display_name,
       last_updated_on: timestamp,
       created_at: timestamp,
-    });
-
-    const post = new Post({
-      _id: new mongoose.Types.ObjectId(),
-      content: requestPost.content,
-      user_id: userId,
-      user_display_name: user.display_name,
-      thread_id: thread._id,
-      images: requestPost.images,
-      created_at: timestamp,
-      user_avatar: user.photo_url,
-      thread_title: requestThread.title,
     });
 
     await thread.save(async (error) => {
@@ -89,40 +130,4 @@ const newThread = async (req, res) => {
   }
 };
 
-const getThreadsByForumId = async (req, res) => {
-  try {
-    const threads = await Thread.find({
-      forum_id: req.params.forum_id,
-    }).sort({ created_at: -1 });
-
-    res.json({
-      threads: threads,
-    });
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-};
-
-const getThreadById = async (req, res) => {
-  try {
-    const thread = await Thread.findOneAndUpdate(
-      { _id: req.params.thread_id },
-      {
-        $inc: {
-          number_of_views: 1,
-        },
-      }
-    );
-
-    res.json(thread);
-  } catch (e) {
-    throw e;
-  }
-};
-
-module.exports = {
-  getThreadById,
-  getThreadsByForumId,
-  newThread,
-};
+module.exports = controller;

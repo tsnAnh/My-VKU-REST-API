@@ -1,47 +1,48 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ThreadSchema = new Schema({
-    title: {
-        type: String
-    },
-    forumId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Forum'
-    },
-    userDisplayName: String,
-    userAvatar: String,
-    numberOfReplies: {
-        type: Number,
-        default: 1
-    },
-    numberOfViews: {
-        type: Number,
-        default: 0
-    },
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    createdAt: {
-        type: Number,
-        default: new Date().getTime()
-    },
-    lastUpdatedOn: {
-        type: Number,
-        default: new Date().getTime()
-    },
-    posts: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Reply'
-        }],
-        default: []
-    },
-    editHistory: {
-        type: [String],
-        default: []
-    }
+  uidGG: {
+    type: "String",
+    ref: "User",
+  },
+  forumId: {
+    type: "String",
+    ref: "Forum",
+  },
+  title: {
+    type: String,
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+  numberOfReplies: {
+    type: Number,
+    default: 0,
+  },
+  numberOfViews: {
+    type: Number,
+    default: 0,
+  },
+  lastUpdatedOn: {
+    type: Number,
+    default: new Date().getTime(),
+  },
+  //   editHistory: [{}], từ từ làm
+
+  //---------------Mấy cái dưới này nên xóa::
+  //   posts: {
+  //     type: [
+  //       {
+  //         type: Schema.Types.ObjectId,
+  //         ref: "Reply",
+  //       },
+  //     ],
+  //     default: [],
+  //   },
+  //   userDisplayName: String,
+  //   userAvatar: String,
 });
 
-module.exports = Thread = mongoose.model('thread', ThreadSchema);
+module.exports = Thread = mongoose.model("thread", ThreadSchema);

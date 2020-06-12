@@ -1,48 +1,63 @@
+//MODEL
 const Forum = require("../model/Forum");
+const Thread = require("../model/Thread");
 
-const getForums = async (req, res) => {
+const controller = {};
+
+//GET ALL FORUMS
+controller.getForums = async (req, res) => {
   try {
-    const forums = await Forum.find({});
-    // const idForum = forums.map(forum => forum._id);
-    // const lastestThreads = await Thread.findAll({forumId :{"$in":idForum}});
-
-    res.json({
-      forums: forums,
-    });
-  } catch (e) {
-    console.log(e);
-    throw e;
+    let forums = await Forum.find();
+    res.json(forums);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 
-const getForumById = async (req, res) => {
+// GET A FORUM BY ID
+controller.getForumById = async (req, res) => {
   const idForum = req.params.idForum;
   try {
     const forum = await Forum.findById(idForum);
 
     res.json(forum);
-  } catch (e) {
-    console.log(e);
-    throw e;
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 
-const createForum = async (req, res) => {
+// CREATE A NEW FORUM
+controller.createForum = async (req, res) => {
   try {
-    const forum = new Forum(req.body);
+    const { title, subtitle, description, image } = req.body;
+    const forum = new Forum({
+      title,
+      subtitle,
+      description,
+      image,
+    });
     await forum.save();
 
     res.json(forum);
-  } catch (e) {
-    res.json({
-      msg: "Sonething went wrong!",
-      error: e,
-    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 
-module.exports = {
-  getForums,
-  getForumById,
-  createForum,
+//GET ALL THREADS OF A FORUM
+controller.getThreadsByForumId = async (req, res) => {
+  try {
+    const threads = await Thread.find({
+      forum_id: req.params.forum_id,
+    }).sort({ created_at: -1 });
+    res.json(threads);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
 };
+
+module.exports = controller;

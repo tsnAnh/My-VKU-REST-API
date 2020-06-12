@@ -17,7 +17,7 @@ exports.authGoogle = async (req, res, next) => {
       //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
 
-    req.locals.userGG = ticket.getPayload();
+    req.userGG = ticket.getPayload();
     next();
   } catch (err) {
     console.log(err);

@@ -4,11 +4,11 @@ const controller = {};
 
 //LOAD USER
 controller.login = async (req, res) => {
-  const userGG = req.locals.userGG;
+  const userGG = req.userGG;
   try {
     const user = await User.findOne({
       //sub là id user của GG
-      uidGG: userGG["sub"],
+      uidGG: userGG.sub,
     });
     if (!user) {
       const newUser = new User({
@@ -29,24 +29,22 @@ controller.login = async (req, res) => {
         isNew: false,
       });
     }
-  } catch (err) {
-    console.log(err.message);
+  } catch (error) {
+    console.log(error.message);
     res.status(500).send("Server Error");
   }
 };
 
 //GET INFOR OF USER
 controller.loadUser = async (req, res) => {
-  const uid = req.params.userId;
+  const userGG = req.userGG;
   try {
-    const user = await User.findById(uid);
+    let user = await User.findOne({ uidGG: userGG.sub }).lean();
+    user.GG = userGG;
     res.json(user);
-  } catch (e) {
-    await res.json({
-      msg: "Unexpected error",
-      error: e,
-    });
-    throw e;
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 

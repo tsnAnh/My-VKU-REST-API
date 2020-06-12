@@ -32,6 +32,5 @@ router.post(
   upload.single("image"),
   replyController.uploadPostImage
 );
-router.get("/:thread_id", replyController.getPostsByThreadId);
 
 module.exports = router;

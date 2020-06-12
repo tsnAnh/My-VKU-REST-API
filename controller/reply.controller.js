@@ -85,34 +85,6 @@ const uploadPostImage = async (req, res) => {
   }
 };
 
-const getPostsByThreadId = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-
-  try {
-    const posts = await Reply.find({ thread_id: req.params.thread_id })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .sort({
-        created_at: 1,
-      })
-      .exec();
-
-    const count = await Reply.countDocuments();
-
-    res.json({
-      posts,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page * 1,
-    });
-  } catch (e) {
-    res.json({
-      status: "error",
-      msg: e,
-    });
-    throw e;
-  }
-};
-
 module.exports = {
   getPostById,
   newPost,
