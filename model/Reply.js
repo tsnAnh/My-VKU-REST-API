@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
-  uidGG: {
+  uid: {
     type: String,
     ref: "User",
   },
-  threadId: {
+  idThread: {
     type: String,
     ref: "Thread",
+  },
+  idForum: {
+    type: String,
+    ref: "Forum",
   },
   content: {
     type: String,

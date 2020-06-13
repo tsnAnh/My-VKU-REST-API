@@ -1,21 +1,22 @@
+//MODEL
 const User = require("../model/User");
 
 const controller = {};
 
 //LOAD USER
 controller.login = async (req, res) => {
-  const userGG = req.userGG;
+  const { sub, name, picture, email } = req.userGG;
   try {
     const user = await User.findOne({
       //sub là id user của GG
-      uidGG: userGG.sub,
+      uidGG: sub,
     });
     if (!user) {
       const newUser = new User({
-        uidGG: userGG["sub"],
-        displayName: userGG["name"],
-        photoUrl: userGG["picture"],
-        email: userGG["email"],
+        uidGG: sub,
+        displayName: name,
+        photoUrl: picture,
+        email: email,
       });
       await newUser.save();
 
@@ -37,10 +38,17 @@ controller.login = async (req, res) => {
 
 //GET INFOR OF USER
 controller.loadUser = async (req, res) => {
-  const userGG = req.userGG;
+  const { sub, name, picture } = req.userGG;
   try {
-    let user = await User.findOne({ uidGG: userGG.sub }).lean();
-    user.GG = userGG;
+    let user = await User.findOne({ uidGG: sub }).lean();
+    if (!user) {
+      return res.status(401).json("User not found");
+    }
+    user = {
+      ...user,
+      name,
+      picture,
+    };
     res.json(user);
   } catch (error) {
     console.log(error.message);
@@ -48,4 +56,13 @@ controller.loadUser = async (req, res) => {
   }
 };
 
+//-----------ADMIN-------
+controller.deleteAllUsers = async (req, res) => {
+  const users = await User.remove({});
+  res.json("Deleted all users");
+};
+controller.getAllUsers = async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+};
 module.exports = controller;

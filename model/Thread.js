@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ThreadSchema = new Schema({
-  uidGG: {
+  uid: {
     type: "String",
     ref: "User",
   },
-  forumId: {
+  idForum: {
     type: "String",
     ref: "Forum",
   },
@@ -23,7 +23,7 @@ const ThreadSchema = new Schema({
   },
   numberOfViews: {
     type: Number,
-    default: 0,
+    default: 1,
   },
   lastUpdatedOn: {
     type: Number,

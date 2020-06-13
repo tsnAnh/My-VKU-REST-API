@@ -5,21 +5,30 @@ const router = express.Router();
 const controller = require("../../controller/thread.controller");
 
 //MIDDLEWARE
-const auth = require("../../controller/forum.controller");
+const auth = require("../middleware/auth.middle");
 
 // @route   GET api/thread/:idThread
 // @desc    Get a thread by id
 // @access  Public
 router.get("/:idThread", controller.getThreadById);
 
-// @route   POST api/thread/
+// @route   GET api/thread/reply/:idThread
+// @desc    Get all replies of of the thread
+// @access  Public
+router.get("/reply/:idThread", controller.getAllRepliesOfThread);
+
+// @route   POST api/thread/:idForum
 // @desc    Create a thread
 // @access  Private
-router.post("/", controller.createThread);
+router.post("/:idForum", auth.authGoogle, controller.createThread);
 
-// @route   GET api/thread/reply/:idThread
-// @desc    Get all replies of of speacified thread
-// @access  Public
-router.get("/reply/:idThread", controller.getRepliesByThreadId);
+// @route   DELETE api/thread/:idThread
+// @desc    Edit a thread
+// @access  Private
+
+// @route   DELETE api/thread/:idThread
+// @desc    Delete a thread
+// @access  Private
+router.delete("/:idThread", auth.authGoogle, controller.deleteThread);
 
 module.exports = router;

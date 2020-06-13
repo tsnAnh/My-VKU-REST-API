@@ -14,6 +14,7 @@ const forumSchema = new Schema({
   image: {
     type: String,
   },
+  //Mỗi lần có thread  hoặc reply tạo ra sẽ update thêm vào forum
   lastUpdatedAt: {
     type: Number,
     default: new Date().getTime(),

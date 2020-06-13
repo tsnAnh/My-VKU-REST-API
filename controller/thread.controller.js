@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const ObjectId = require("mongoose");
 
 //MODEL
 const Thread = require("../model/Thread");
 const User = require("../model/User");
 const Forum = require("../model/Forum");
-const Post = require("../model/Reply");
+const Reply = require("../model/Reply");
 
 const controller = {};
 
@@ -12,26 +13,38 @@ const controller = {};
 controller.getThreadById = async (req, res) => {
   try {
     const thread = await Thread.findOneAndUpdate(
-      { _id: req.params.thread_id },
+      { _id: req.params.idThread },
       {
         $inc: {
-          number_of_views: 1,
+          numberOfViews: 1,
         },
+      },
+      {
+        new: true,
       }
     );
 
     res.json(thread);
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(401).json(null);
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 
 // GET ALL REPLIES OF A THREAD
-controller.getRepliesByThreadId = async (req, res) => {
+controller.getAllRepliesOfThread = async (req, res) => {
+  const idThread = req.params.idThread;
   const { page = 1, limit = 10 } = req.query;
 
   try {
-    const posts = await Reply.find({ thread_id: req.params.thread_id })
+    const thread = await Thread.findById(idThread);
+    if (!thread) {
+      return res.status(401).json(null);
+    }
+    const replies = await Reply.find({ idThread })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .sort({
@@ -42,91 +55,71 @@ controller.getRepliesByThreadId = async (req, res) => {
     const count = await Reply.countDocuments();
 
     res.json({
-      posts,
+      replies,
       totalPages: Math.ceil(count / limit),
       currentPage: page * 1,
     });
-  } catch (e) {
-    res.json({
-      status: "error",
-      msg: e,
-    });
-    throw e;
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(401).json(null);
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 
 // CREATE THREAD
 controller.createThread = async (req, res) => {
-  const userGG = req.userGG;
+  const idForum = req.params.idForum;
+  const { title } = req.body;
 
   try {
-    const user = await User.findOne({ uidGG: userGG["sub"] });
-    const requestThread = req.body.thread;
-    const requestPost = req.body.post;
-
-    const userId = user._id;
-
-    const timestamp = new Date().getTime();
-    console.log("Timestamp: ", timestamp);
-    //TODO: CREATE THREAD
-    const thread = new Thread({
-      _id: new mongoose.Types.ObjectId(),
-      title: requestThread.title,
-      image: requestThread.image,
-      forum_id: requestThread.forum_id,
-      user_id: userId,
-      user_avatar: user.photo_url,
-      user_display_name: user.display_name,
-      last_updated_on: timestamp,
-      created_at: timestamp,
+    const user = await User.findOne({ uidGG: req.userGG.sub });
+    const forum = await Forum.findById(idForum);
+    if (!user || !forum) {
+      return res.status(401).json(null);
+    }
+    const newThread = new Thread({
+      uid: user._id,
+      title: title,
+      idForum: idForum,
     });
+    await newThread.save();
 
-    await thread.save(async (error) => {
-      if (error) {
-        throw error;
-      }
-      try {
-        await Forum.findOneAndUpdate(
-          { _id: requestThread.forum_id },
-          {
-            $inc: {
-              number_of_posts: 1,
-              number_of_threads: 1,
-            },
-            $push: {
-              threads: thread._id,
-            },
-            last_updated_on: timestamp,
-          }
-        );
-        await User.findOneAndUpdate(
-          { _id: userId },
-          {
-            $inc: {
-              number_of_threads: 1,
-            },
-            $push: {
-              threads: thread._id,
-              posts: post._id,
-            },
-          }
-        );
-        await thread.updateOne({
-          $push: {
-            posts: post._id,
-          },
-        });
-        await post.save();
-      } catch (e) {
-        throw e;
-      }
-    });
+    //Update lastUpdatedAt và numberOfThread
+    await Forum.findOneAndUpdate(
+      { _id: idForum },
+      { lastUpdatedAt: newThread.createdAt, $inc: { numberOfThreads: 1 } }
+    );
+    res.json(newThread);
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(401).json(null);
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+};
 
-    res.json(thread);
-  } catch (e) {
-    console.log(e);
-    res.status(400).json("Something went wrong");
-    throw e;
+//DELETE
+controller.deleteThread = async (req, res) => {
+  const idThread = req.params.idThread;
+
+  try {
+    const user = await User.findOne({ uidGG: req.userGG.sub });
+    const thread = await Thread.findById(idThread);
+    //Check if the thread is owned by that user
+    if (!user || !thread || thread.uid != user._id) {
+      return res.status(401).json(null);
+    }
+    await Thread.deleteOne({ _id: idThread });
+    res.json("deleted that thread");
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(401).json(null);
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
 

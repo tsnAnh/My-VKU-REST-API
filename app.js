@@ -16,11 +16,13 @@ app.use(express.json());
 // app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, "public")));
 
-//DEFINE ROUTE
+//ADMIN API --- đang testing
+// app.use("/admin/user", require("./routes/admin/user.admin"));
+
+//PUBLIC API
 app.get("/", (req, res) => res.send("API running"));
-// app.use("/news", require("./routes/api/news.api"));
 app.use("/api/forum", require("./routes/api/forum.api"));
-// app.use("/thread", require("./routes/api/thread.api"));
+app.use("/api/thread", require("./routes/api/thread.api"));
 // app.use("/reply", require("./routes/api/reply.api"));
 app.use("/api/user", require("./routes/api/user.api"));
 
