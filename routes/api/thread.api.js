@@ -22,7 +22,7 @@ router.get("/reply/:idThread", controller.getAllRepliesOfThread);
 // @access  Private
 router.post("/:idForum", auth.authGoogle, controller.createThread);
 
-// @route   DELETE api/thread/:idThread
+// @route   POST api/thread/:idThread
 // @desc    Edit a thread
 // @access  Private
 
@@ -30,5 +30,10 @@ router.post("/:idForum", auth.authGoogle, controller.createThread);
 // @desc    Delete a thread
 // @access  Private
 router.delete("/:idThread", auth.authGoogle, controller.deleteThread);
+
+// @route   PUT api/thread/:idThread
+// @desc    Like or unlike a thread
+// @access  Private
+router.put("/:idThread", auth.authGoogle, controller.interactThread);
 
 module.exports = router;

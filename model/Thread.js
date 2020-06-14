@@ -17,6 +17,14 @@ const ThreadSchema = new Schema({
     type: Number,
     default: new Date().getTime(),
   },
+  likes: [
+    {
+      uid: {
+        type: String,
+        ref: "User",
+      },
+    },
+  ],
   numberOfReplies: {
     type: Number,
     default: 0,

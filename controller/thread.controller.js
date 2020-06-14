@@ -27,7 +27,7 @@ controller.getThreadById = async (req, res) => {
     res.json(thread);
   } catch (error) {
     if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     console.log(error.message);
     res.status(500).send("Server Error");
@@ -42,7 +42,7 @@ controller.getAllRepliesOfThread = async (req, res) => {
   try {
     const thread = await Thread.findById(idThread);
     if (!thread) {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     const replies = await Reply.find({ idThread })
       .limit(limit * 1)
@@ -61,7 +61,7 @@ controller.getAllRepliesOfThread = async (req, res) => {
     });
   } catch (error) {
     if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     console.log(error.message);
     res.status(500).send("Server Error");
@@ -77,7 +77,7 @@ controller.createThread = async (req, res) => {
     const user = await User.findOne({ uidGG: req.userGG.sub });
     const forum = await Forum.findById(idForum);
     if (!user || !forum) {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     const newThread = new Thread({
       uid: user._id,
@@ -86,22 +86,26 @@ controller.createThread = async (req, res) => {
     });
     await newThread.save();
 
-    //Update lastUpdatedAt và numberOfThread
+    //Update lastUpdatedAt và numberOfThread of Forum
+    const threads = await Thread.find({ idForum: idForum });
     await Forum.findOneAndUpdate(
       { _id: idForum },
-      { lastUpdatedAt: newThread.createdAt, $inc: { numberOfThreads: 1 } }
+      {
+        lastUpdatedAt: newThread.createdAt,
+        numberOfThreads: threads.length,
+      }
     );
     res.json(newThread);
   } catch (error) {
     if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     console.log(error.message);
     res.status(500).send("Server Error");
   }
 };
 
-//DELETE
+//DELETE A THREAD
 controller.deleteThread = async (req, res) => {
   const idThread = req.params.idThread;
 
@@ -110,17 +114,54 @@ controller.deleteThread = async (req, res) => {
     const thread = await Thread.findById(idThread);
     //Check if the thread is owned by that user
     if (!user || !thread || thread.uid != user._id) {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
+
     await Thread.deleteOne({ _id: idThread });
     res.json("deleted that thread");
+
+    //Update numberOfThreads in the Forum
+    const threads = await Thread.find({ idForum: thread.idForum });
+    await Forum.findOneAndUpdate(
+      { _id: thread.idForum },
+      { numberOfThreads: threads.length > 0 ? threads.length : 0 }
+    );
   } catch (error) {
     if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
+      return res.status(404).json(null);
     }
     console.log(error.message);
     res.status(500).send("Server Error");
   }
 };
 
+//LIKE OR UNLIKE THREAD
+controller.interactThread = async (req, res) => {
+  const idThread = req.params.idThread;
+  try {
+    const user = await User.findOne({ uidGG: req.userGG.sub });
+    const thread = await Thread.findById(idThread);
+    if (!thread || !user) {
+      return res.status(404).json(null);
+    }
+    //check if the Thread has already been liked
+    const removeIndex = thread.likes.findIndex((like) => like.uid == user._id);
+    if (removeIndex > -1) {
+      //Unlike
+      thread.likes.splice(removeIndex, 1);
+    } else {
+      // Like a Thread
+      thread.likes.unshift({ uid: user._id });
+    }
+
+    await thread.save();
+    res.json(thread);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json(null);
+    }
+    res.status(500).send("Server Error");
+  }
+};
 module.exports = controller;

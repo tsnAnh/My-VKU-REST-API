@@ -17,8 +17,8 @@ exports.authGoogle = async (req, res, next) => {
 
     req.userGG = ticket.getPayload();
     next();
-  } catch (err) {
-    console.log(err);
+  } catch (errror) {
+    console.log(error);
     res.status(401).json({ msg: "Token is not valid" });
   }
 };
