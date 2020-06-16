@@ -29,4 +29,4 @@ const forumSchema = new Schema({
   },
 });
 
-module.exports = Forum = mongoose.model("forum", forumSchema);
+module.exports = Forum = mongoose.model("Forum", forumSchema);

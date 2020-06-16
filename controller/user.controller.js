@@ -10,14 +10,15 @@ controller.login = async (req, res) => {
     const user = await User.findOne({
       //sub là id user của GG
       uidGG: sub,
-    });
+    }).lean();
     if (!user) {
       const newUser = new User({
         uidGG: sub,
-        displayName: name,
-        photoUrl: picture,
         email: email,
+        displayName: name,
+        photoURL: picture,
       });
+      console.log(name);
       await newUser.save();
 
       res.json({
@@ -40,15 +41,14 @@ controller.login = async (req, res) => {
 controller.loadUser = async (req, res) => {
   const { sub, name, picture } = req.userGG;
   try {
-    let user = await User.findOne({ uidGG: sub }).lean();
+    let user = await User.findOne({ uidGG: sub });
     if (!user) {
       return res.status(401).json("User not found");
     }
-    user = {
-      ...user,
-      name,
-      picture,
-    };
+    //update photo and displayname
+    user.displayName = name;
+    user.photoURL = picture;
+    await user.save();
     res.json(user);
   } catch (error) {
     console.log(error.message);

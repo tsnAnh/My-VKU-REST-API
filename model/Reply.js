@@ -6,11 +6,11 @@ const ReplySchema = new Schema({
     type: String,
     ref: "User",
   },
-  idThread: {
+  threadId: {
     type: String,
     ref: "Thread",
   },
-  idForum: {
+  forumId: {
     type: String,
     ref: "Forum",
   },
@@ -35,4 +35,4 @@ const ReplySchema = new Schema({
   // threadTitle: String,
 });
 
-module.exports = Reply = mongoose.model("reply", ReplySchema);
+module.exports = Reply = mongoose.model("Reply", ReplySchema);

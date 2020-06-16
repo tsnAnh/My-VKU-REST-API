@@ -6,6 +6,8 @@ const UserSchema = new Schema({
   uidGG: String,
   email: String,
   role: Number,
+  photoURL: String,
+  displayName: String,
 });
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

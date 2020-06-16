@@ -14,10 +14,12 @@ exports.authGoogle = async (req, res, next) => {
       idToken: token,
       audience: CLIENT_ID,
     });
-
     req.userGG = ticket.getPayload();
+    if (req.userGG.hd !== "sict.udn.vn") {
+      return res.status(404).json({ msg: "Don't have access" });
+    }
     next();
-  } catch (errror) {
+  } catch (error) {
     console.log(error);
     res.status(401).json({ msg: "Token is not valid" });
   }

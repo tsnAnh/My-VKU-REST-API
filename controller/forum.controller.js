@@ -6,7 +6,7 @@ const Reply = require("../model/Thread");
 const controller = {};
 
 //GET ALL FORUMS
-controller.getForums = async (req, res) => {
+controller.getAllForums = async (req, res) => {
   try {
     let forums = await Forum.find();
     res.json(forums);
@@ -18,9 +18,9 @@ controller.getForums = async (req, res) => {
 
 // GET A FORUM BY ID
 controller.getForumById = async (req, res) => {
-  const idForum = req.params.idForum;
+  const forumId = req.params.forumId;
   try {
-    const forum = await Forum.findById(idForum);
+    const forum = await Forum.findById(forumId);
 
     res.json(forum);
   } catch (error) {
@@ -34,15 +34,15 @@ controller.getForumById = async (req, res) => {
 
 //GET ALL THREADS OF A FORUM
 controller.getAllThreadsOfForum = async (req, res) => {
-  const idForum = req.params.idForum;
+  const forumId = req.params.forumId;
   try {
-    const forum = await Forum.findById(idForum);
+    const forum = await Forum.findById(forumId);
     if (!forum) {
       return res.status(401).json(null);
     }
     const threads = await Thread.find({
-      idForum: idForum,
-    });
+      forumId: forumId,
+    }).populate("uid");
     res.json(threads);
   } catch (error) {
     if (error.kind == "ObjectId") {

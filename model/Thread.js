@@ -6,7 +6,7 @@ const ThreadSchema = new Schema({
     type: "String",
     ref: "User",
   },
-  idForum: {
+  forumId: {
     type: "String",
     ref: "Forum",
   },
@@ -53,4 +53,4 @@ const ThreadSchema = new Schema({
   //   userAvatar: String,
 });
 
-module.exports = Thread = mongoose.model("thread", ThreadSchema);
+module.exports = Thread = mongoose.model("Thread", ThreadSchema);

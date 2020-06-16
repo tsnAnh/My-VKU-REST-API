@@ -12,17 +12,17 @@ const auth = require("../middleware/auth.middle");
 // @route   GET api/forum/
 // @desc    Get all forums
 // @access  Public
-router.get("/", controller.getForums);
+router.get("/", controller.getAllForums);
 
-// @route   GET api/forum/:idForum
+// @route   GET api/forum/:forumId
 // @desc    Get a specified forum by id
 // @access  Public
-router.get("/:idForum", controller.getForumById);
+router.get("/:forumId", controller.getForumById);
 
-// @route   GET api/forum/thread/:idForum
+// @route   GET api/forum/thread/:forumId
 // @desc    Get all threads of speacified forum
 // @access  Public
-router.get("/thread/:idForum", controller.getAllThreadsOfForum);
+router.get("/thread/:forumId", controller.getAllThreadsOfForum);
 
 // ------------------------ADMIN------------------------
 
@@ -31,10 +31,10 @@ router.get("/thread/:idForum", controller.getAllThreadsOfForum);
 // @access  Private
 router.post("/", controller.createForum);
 
-// @route   DELETE api/forum/:idForum
+// @route   DELETE api/forum/:forumId
 // @desc    Delete a forum
 // @access  Private
-// router.delete("/:idForum", controller.deleteForum);
+// router.delete("/:forumId", controller.deleteForum);
 
 // @route   DELETE api/forum/all
 // @desc    Delete all forums
