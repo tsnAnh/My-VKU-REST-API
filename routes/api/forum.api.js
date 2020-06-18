@@ -36,9 +36,9 @@ router.post("/", controller.createForum);
 // @access  Private
 // router.delete("/:forumId", controller.deleteForum);
 
-// @route   DELETE api/forum/all
+// @route   DELETE api/forum/
 // @desc    Delete all forums
 // @access  Private
-router.delete("/all", controller.deleteAllForums);
+router.delete("/", controller.deleteAllForums);
 
 module.exports = router;

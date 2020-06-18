@@ -1,93 +1,61 @@
+const mongoose = require("mongoose");
+
+//MODEL
 const Reply = require("../model/Reply");
 const Thread = require("../model/Thread");
 const Forum = require("../model/Forum");
 const User = require("../model/User");
 
-const mongoose = require("mongoose");
-const fs = require("fs-extra");
+const controller = {};
 
-const getPostById = async (req, res) => {
+//MAKE A REPLY
+controller.newReply = async (req, res) => {
+  const { content, quoted } = req.body;
+  const uidGG = req.userGG.sub;
+  const threadId = req.params.threadId;
+  const images = req.files;
+  const createdAt = new Date().getTime();
   try {
-    const post = await Reply.findById(req.params.post_id);
+    const user = await User.findOne({ uidGG });
 
-    res.json(post);
-  } catch (e) {
-    throw e;
-  }
-};
-
-const newPost = async (req, res) => {
-  try {
-    const requestPost = req.body;
-
-    const timestamp = new Date().getTime();
-
-    const user = await User.findOne({ uid: res.locals.user.uid });
-
-    const post = await Reply.create({
-      _id: new mongoose.Types.ObjectId(),
-      content: requestPost.content,
-      created_at: timestamp,
-      user_id: user._id,
-      user_display_name: user.display_name,
-      images: requestPost.images,
-      thread_id: requestPost.thread_id,
-      thread_title: requestPost.thread_title,
-      user_avatar: user.photo_url,
+    const newReply = new Reply({
+      uid: user._id,
+      threadId,
+      content,
+      createdAt,
+      images,
     });
-
-    if (requestPost.quoted) {
-      const quotedPost = await Reply.findOne({ _id: requestPost.quoted });
-      await post.updateOne({
-        quoted: new mongoose.Types.ObjectId(requestPost.quoted),
-        quoted_post: quotedPost,
-      });
+    //Check if quoted exsit and is in the thread
+    const reply = await Reply.findOne({ _id: quoted, threadId });
+    if (reply) {
+      newReply.quoted = quoted;
     }
+    await newReply.save();
 
+    //Update Thread and Forum
     const thread = await Thread.findOneAndUpdate(
-      { _id: requestPost.thread_id },
+      { _id: threadId },
       {
-        last_updated_on: timestamp,
+        lastUpdatedOn: createdAt,
         $inc: {
-          number_of_posts: 1,
-        },
-        $push: {
-          posts: post._id,
+          numberOfReplies: 1,
         },
       }
     );
-
     await Forum.findOneAndUpdate(
-      { _id: thread.forum_id },
+      { _id: thread.forumId },
       {
-        last_updated_on: timestamp,
+        lastUpdatedOn: createdAt,
         $inc: {
-          number_of_posts: 1,
+          numberOfReplies: 1,
         },
       }
     );
 
-    res.json(post);
+    res.json(newReply);
   } catch (e) {
     throw e;
   }
 };
 
-const uploadPostImage = async (req, res) => {
-  try {
-    if (req.file) {
-      let filename = new Date().valueOf() + "-" + req.file.originalname;
-      await fs.rename(req.file.path, req.file.destination + "/" + filename);
-      res.json("images" + "/" + res.locals.user.uid + "/" + filename);
-    }
-  } catch (e) {
-    throw e;
-  }
-};
-
-module.exports = {
-  getPostById,
-  newPost,
-  getPostsByThreadId,
-  uploadPostImage,
-};
+module.exports = controller;

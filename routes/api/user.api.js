@@ -8,7 +8,7 @@ const controller = require("../../controller/user.controller");
 const auth = require("../middleware/auth.middle");
 
 // @route   GET api/user
-// @desc    Load user
+// @desc    Load an user
 // @access  Private
 router.get("/", auth.authGoogle, controller.loadUser);
 
@@ -18,10 +18,10 @@ router.get("/", auth.authGoogle, controller.loadUser);
 router.get("/auth", auth.authGoogle, controller.login);
 
 // ------ADMIN----------
-// @route   DELETE api/user/all
+// @route   DELETE api/user/
 // @desc    delete all users
 // @access  Public
-router.delete("/all", controller.deleteAllUsers);
+router.delete("/", controller.deleteAllUsers);
 
 // @route   GET api/user/all
 // @desc    Get all users

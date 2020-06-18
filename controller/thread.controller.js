@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const ObjectId = require("mongoose");
 
 //MODEL
 const Thread = require("../model/Thread");
@@ -156,7 +155,7 @@ controller.interactThread = async (req, res) => {
     }
 
     await thread.save();
-    res.json(thread);
+    res.json(thread.likes);
   } catch (err) {
     console.error(err.message);
     if (err.kind === "ObjectId") {

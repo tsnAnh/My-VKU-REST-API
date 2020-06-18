@@ -10,10 +10,10 @@ const ReplySchema = new Schema({
     type: String,
     ref: "Thread",
   },
-  forumId: {
-    type: String,
-    ref: "Forum",
-  },
+  // forumId: {
+  //   type: String,
+  //   ref: "Forum",
+  // },
   content: {
     type: String,
   },
@@ -22,16 +22,16 @@ const ReplySchema = new Schema({
     default: new Date().getTime(),
   },
   quoted: {
-    type: Schema.Types.ObjectId,
+    type: String,
   },
-  quotedReply: this,
+  images: [String],
+
   //   editHistory: [{
   // }], từ từ làm
 
   //---------------Mấy cái dưới này nên xóa::
   // userDisplayName: String,
   // userAvatar: String,
-  // images: [String],
   // threadTitle: String,
 });
 

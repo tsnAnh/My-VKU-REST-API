@@ -37,7 +37,7 @@ router.delete("/:threadId", auth.authGoogle, controller.deleteThread);
 router.put("/:threadId", auth.authGoogle, controller.interactThread);
 
 // -------ADMIN-----------
-// @route   GET api/thread/all
+// @route   GET api/thread/
 // @desc    Get all threads
 // @access  Private
 router.get("/", controller.getAllThreads);

@@ -15,6 +15,7 @@ exports.authGoogle = async (req, res, next) => {
       audience: CLIENT_ID,
     });
     req.userGG = ticket.getPayload();
+    //CHECK DOMAIN
     if (req.userGG.hd !== "sict.udn.vn") {
       return res.status(404).json({ msg: "Don't have access" });
     }

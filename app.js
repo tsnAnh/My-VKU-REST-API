@@ -23,7 +23,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("API running"));
 app.use("/api/forum", require("./routes/api/forum.api"));
 app.use("/api/thread", require("./routes/api/thread.api"));
-// app.use("/reply", require("./routes/api/reply.api"));
+app.use("/reply", require("./routes/api/reply.api"));
 app.use("/api/user", require("./routes/api/user.api"));
 
 //FOR DEVELOPMENT

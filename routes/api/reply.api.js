@@ -1,37 +1,20 @@
-const replyController = require("../../controller/reply.controller");
-
 const express = require("express");
 const router = express.Router();
 
-const firebaseMiddleware = require("express-firebase-middleware");
+const uploadImg = require("../../config/multer");
+//MIDDLEWARE
+const auth = require("../middleware/auth.middle");
+const checkImg = require("../middleware/checkImage.middle");
+//CONTROLLER
+const controller = require("../../controller/reply.controller");
+//TODO: chưa test checkImg, xử lý file, nếu user up file thì sao??
+// @route   POST api/reply/:threadId
+// @desc    Make a reply in a thread
+// @access  Private
+router.post("/:threadId", auth.authGoogle, checkImg, controller.newReply);
 
-const multer = require("multer");
-const fs = require("fs-extra");
-
-//TODO: REPLY
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, callback) => {
-      let dest = req.params.uid;
-      let path = "../public/images/" + dest;
-      if (!fs.existsSync(path)) {
-        fs.mkdirSync(path);
-      }
-      callback(null, path);
-    },
-    filename: (req, file, callback) => {
-      callback(null, file.originalname);
-    },
-  }),
-});
-
-router.get("/get/:post_id", replyController.getPostById);
-router.post("/new", firebaseMiddleware.auth, replyController.newPost);
-router.post(
-  "/upload/:uid",
-  firebaseMiddleware.auth,
-  upload.single("image"),
-  replyController.uploadPostImage
-);
+// @route   DELETE api/reply/:threadId
+// @desc    Delete a reply in a thread
+// @access  Private
 
 module.exports = router;
