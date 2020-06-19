@@ -5,7 +5,7 @@ var randomstring = require("randomstring");
 module.exports = multer({
   storage: multer.diskStorage({
     destination: async (req, file, callback) => {
-      let path = __dirname + "/../public/images/" + req.params.idThread;
+      let path = __dirname + "/../public/images/" + req.params.threadId;
       if (!fs.existsSync(path)) {
         await fs.mkdirSync(path);
       }
@@ -15,4 +15,15 @@ module.exports = multer({
       cb(null, randomstring.generate() + "-" + file.originalname);
     },
   }),
+  // Max size of file = 10MB
+  limits: { fileSize: 100000000 },
+  //Only accept image
+  fileFilter: (req, file, cb) => {
+    const typeFile = file.mimetype.indexOf("image");
+    if (typeFile > -1) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only upload image"), false);
+    }
+  },
 });

@@ -7,8 +7,8 @@ const Forum = require("../model/Forum");
 const User = require("../model/User");
 
 const controller = {};
-
-//MAKE A REPLY
+//TODO: TEST
+//CREATE A NEW REPLY
 controller.newReply = async (req, res) => {
   const { content, quoted } = req.body;
   const uidGG = req.userGG.sub;
@@ -45,7 +45,6 @@ controller.newReply = async (req, res) => {
     await Forum.findOneAndUpdate(
       { _id: thread.forumId },
       {
-        lastUpdatedOn: createdAt,
         $inc: {
           numberOfReplies: 1,
         },
@@ -53,9 +52,24 @@ controller.newReply = async (req, res) => {
     );
 
     res.json(newReply);
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
   }
 };
+
+//DELETE A REPLY
+controller.deleteReplyOfThread = async (req, res) => {};
+
+//-----------ADMIN------------
+controller.getAllReplies = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+controller.deleteAllReplies = async (req, res) => {};
 
 module.exports = controller;

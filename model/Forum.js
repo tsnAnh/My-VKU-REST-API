@@ -11,13 +11,12 @@ const forumSchema = new Schema({
   description: {
     type: String,
   },
-  image: {
+  //Mỗi lần có thread  hoặc reply tạo ra hay xóa đi sẽ update thêm vào forum
+
+  lastestThread: {
     type: String,
-  },
-  //Mỗi lần có thread  hoặc reply tạo ra sẽ update thêm vào forum
-  lastUpdatedAt: {
-    type: Number,
-    default: new Date().getTime(),
+    ref: "Thread",
+    default: null,
   },
   numberOfThreads: {
     type: Number,

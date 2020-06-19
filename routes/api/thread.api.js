@@ -6,40 +6,72 @@ const controller = require("../../controller/thread.controller");
 
 //MIDDLEWARE
 const auth = require("../middleware/auth.middle");
-
-// @route   GET api/thread/:threadId
-// @desc    Get a thread by id
-// @access  Public
-router.get("/:threadId", controller.getThreadById);
+const validator = require("../middleware/validator.middle");
 
 // @route   GET api/thread/reply/:threadId
 // @desc    Get all replies of of the thread
 // @access  Public
-router.get("/reply/:threadId", controller.getAllRepliesOfThread);
+router.get(
+  "/reply/:threadId",
+  validator.checkThread,
+  controller.getAllRepliesOfThread
+);
 
 // @route   POST api/thread/:forumId
 // @desc    Create a thread
 // @access  Private
-router.post("/:forumId", auth.authGoogle, controller.createThread);
+router.post(
+  "/:forumId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkForum,
+  controller.createThread
+);
 
 // @route   POST api/thread/:threadId
-// @desc    Edit a thread
+// @desc    Update a thread
 // @access  Private
 
 // @route   DELETE api/thread/:threadId
 // @desc    Delete a thread
 // @access  Private
-router.delete("/:threadId", auth.authGoogle, controller.deleteThread);
+router.delete(
+  "/:threadId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkThread,
+  controller.deleteThread
+);
 
 // @route   PUT api/thread/:threadId
 // @desc    Like or unlike a thread
 // @access  Private
-router.put("/:threadId", auth.authGoogle, controller.interactThread);
+router.put(
+  "/:threadId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkThread,
+  controller.interactThread
+);
 
-// -------ADMIN-----------
+//--------------------
+//-----------------ÍT DÙNG-------------------------------------------
+//-----------------------
+// @route   GET api/thread/:threadId
+// @desc    Get a thread by id
+// @access  Public
+router.get("/:threadId", controller.getThreadById);
+
+//--------------------
+//-----------------ADMIN---------------------------------------------
+//-----------------------
 // @route   GET api/thread/
 // @desc    Get all threads
 // @access  Private
 router.get("/", controller.getAllThreads);
 
+// @route   GET api/thread/
+// @desc    Get all threads
+// @access  Private
+router.delete("/", controller.deleteAllThreads);
 module.exports = router;

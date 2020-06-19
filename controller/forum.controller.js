@@ -8,25 +8,9 @@ const controller = {};
 //GET ALL FORUMS
 controller.getAllForums = async (req, res) => {
   try {
-    let forums = await Forum.find();
+    let forums = await Forum.find().populate("lastestThread");
     res.json(forums);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
-  }
-};
-
-// GET A FORUM BY ID
-controller.getForumById = async (req, res) => {
-  const forumId = req.params.forumId;
-  try {
-    const forum = await Forum.findById(forumId);
-
-    res.json(forum);
-  } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
-    }
     console.log(error.message);
     res.status(500).send("Server Error");
   }
@@ -53,7 +37,29 @@ controller.getAllThreadsOfForum = async (req, res) => {
   }
 };
 
-// -------------ADMIN-------------
+//--------------------
+//-----------------ÍT DÙNG-------------------------------------------
+//-----------------------
+
+// GET A FORUM BY ID
+controller.getForumById = async (req, res) => {
+  const forumId = req.params.forumId;
+  try {
+    const forum = await Forum.findById(forumId);
+
+    res.json(forum);
+  } catch (error) {
+    if (error.kind == "ObjectId") {
+      return res.status(401).json(null);
+    }
+    console.log(error.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+//--------------------
+//-----------------ADMIN---------------------------------------------
+//-----------------------
 
 // CREATE A NEW FORUM
 controller.createForum = async (req, res) => {
@@ -86,9 +92,9 @@ controller.deleteForum = async (req, res) => {
 //DELETE ALL FORUMS
 controller.deleteAllForums = async (req, res) => {
   try {
-    await Forum.remove({});
-    await Thread.remove({});
-    await Reply.remove({});
+    await Forum.deleteMany({});
+    await Thread.deleteMany({});
+    await Reply.deleteMany({});
     res.json("Deleted all forums");
   } catch (error) {
     console.log(error.message);

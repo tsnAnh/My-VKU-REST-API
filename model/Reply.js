@@ -28,11 +28,6 @@ const ReplySchema = new Schema({
 
   //   editHistory: [{
   // }], từ từ làm
-
-  //---------------Mấy cái dưới này nên xóa::
-  // userDisplayName: String,
-  // userAvatar: String,
-  // threadTitle: String,
 });
 
 module.exports = Reply = mongoose.model("Reply", ReplySchema);

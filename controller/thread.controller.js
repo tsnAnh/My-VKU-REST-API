@@ -35,21 +35,16 @@ controller.getThreadById = async (req, res) => {
 
 // GET ALL REPLIES OF A THREAD
 controller.getAllRepliesOfThread = async (req, res) => {
-  const threadId = req.params.threadId;
+  const threadId = req.thread._id;
   const { page = 1, limit = 10 } = req.query;
 
   try {
-    const thread = await Thread.findById(threadId);
-    if (!thread) {
-      return res.status(404).json(null);
-    }
     const replies = await Reply.find({ threadId })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .sort({
         created_at: 1,
-      })
-      .exec();
+      });
 
     const count = await Reply.countDocuments();
 
@@ -69,28 +64,23 @@ controller.getAllRepliesOfThread = async (req, res) => {
 
 // CREATE THREAD
 controller.createThread = async (req, res) => {
-  const forumId = req.params.forumId;
+  const forum = req.forum;
+  const user = req.user;
   const { title } = req.body;
 
   try {
-    const user = await User.findOne({ uidGG: req.userGG.sub });
-    const forum = await Forum.findById(forumId);
-    if (!user || !forum) {
-      return res.status(404).json(null);
-    }
-    const newThread = new Thread({
+    const newThread = await Thread.create({
       uid: user._id,
       title: title,
-      forumId: forumId,
+      forumId: forum._id,
     });
-    await newThread.save();
 
-    //Update lastUpdatedAt và numberOfThread of Forum
-    const threads = await Thread.find({ forumId: forumId });
+    //Update lastestThread và numberOfThread of Forum
+    const threads = await Thread.find({ forumId: forum._id });
     await Forum.findOneAndUpdate(
-      { _id: forumId },
+      { _id: forum._id },
       {
-        lastUpdatedAt: newThread.createdAt,
+        lastestThread: newThread._id.toString(),
         numberOfThreads: threads.length,
       }
     );
@@ -106,26 +96,27 @@ controller.createThread = async (req, res) => {
 
 //DELETE A THREAD
 controller.deleteThread = async (req, res) => {
-  const threadId = req.params.threadId;
-
+  const thread = req.thread;
+  const user = req.user;
   try {
-    const user = await User.findOne({ uidGG: req.userGG.sub });
-    const thread = await Thread.findById(threadId);
-    console.log(thread.uid == user._id);
     //Check if the thread is owned by that user
-    if (!user || !thread || thread.uid != user._id) {
+    if (thread.uid != user._id) {
       return res.status(404).json(null);
     }
+    await Thread.deleteOne({ _id: thread._id });
 
-    await Thread.deleteOne({ _id: threadId });
-    res.json("deleted");
-
-    //Update numberOfThreads in the Forum
-    const threads = await Thread.find({ forumId: thread.forumId });
+    //Update numberOfThreads and lastestThread in the Forum
+    const threads = await Thread.find({ forumId: thread.forumId }).sort({
+      _id: -1,
+    });
     await Forum.findOneAndUpdate(
       { _id: thread.forumId },
-      { numberOfThreads: threads.length > 0 ? threads.length : 0 }
+      {
+        numberOfThreads: threads.length > 0 ? threads.length : 0,
+        lastestThread: threads.length > 0 ? threadthreads[0]._id : 0,
+      }
     );
+    res.json("deleted thread");
   } catch (error) {
     if (error.kind == "ObjectId") {
       return res.status(404).json(null);
@@ -137,13 +128,9 @@ controller.deleteThread = async (req, res) => {
 
 //LIKE OR UNLIKE THREAD
 controller.interactThread = async (req, res) => {
-  const threadId = req.params.threadId;
+  const thread = req.thread;
+  const user = req.user;
   try {
-    const user = await User.findOne({ uidGG: req.userGG.sub });
-    const thread = await Thread.findById(threadId);
-    if (!thread || !user) {
-      return res.status(404).json(null);
-    }
     //check if the Thread has already been liked
     const removeIndex = thread.likes.findIndex((like) => like.uid == user._id);
     if (removeIndex > -1) {
@@ -165,11 +152,24 @@ controller.interactThread = async (req, res) => {
   }
 };
 
-// -----------------ADMIN-----------
+// --------------------ADMIN------------------
 controller.getAllThreads = async (req, res) => {
   try {
     const threads = await Thread.find();
     res.json(threads);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json(null);
+    }
+    res.status(500).send("Server Error");
+  }
+};
+controller.deleteAllThreads = async (req, res) => {
+  try {
+    await Thread.deleteMany();
+    await Reply.deleteMany();
+    res.json("Deleted all threads");
   } catch (err) {
     console.error(err.message);
     if (err.kind === "ObjectId") {

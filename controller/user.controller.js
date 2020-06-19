@@ -39,12 +39,9 @@ controller.login = async (req, res) => {
 
 //GET INFOR OF USER
 controller.loadUser = async (req, res) => {
-  const { sub, name, picture } = req.userGG;
+  const { name, picture } = req.userGG;
+  const user = req.user;
   try {
-    let user = await User.findOne({ uidGG: sub });
-    if (!user) {
-      return res.status(401).json("User not found");
-    }
     //update photo and displayname
     user.displayName = name;
     user.photoURL = picture;
@@ -58,7 +55,7 @@ controller.loadUser = async (req, res) => {
 
 //-----------ADMIN-------
 controller.deleteAllUsers = async (req, res) => {
-  const users = await User.remove({});
+  await User.deleteMany({});
   res.json("Deleted all users");
 };
 controller.getAllUsers = async (req, res) => {

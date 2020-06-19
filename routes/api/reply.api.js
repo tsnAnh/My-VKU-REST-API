@@ -4,17 +4,40 @@ const router = express.Router();
 const uploadImg = require("../../config/multer");
 //MIDDLEWARE
 const auth = require("../middleware/auth.middle");
-const checkImg = require("../middleware/checkImage.middle");
+const validator = require("../middleware/validator.middle");
+
 //CONTROLLER
 const controller = require("../../controller/reply.controller");
-//TODO: chưa test checkImg, xử lý file, nếu user up file thì sao??
+
 // @route   POST api/reply/:threadId
-// @desc    Make a reply in a thread
+// @desc    Create a reply in a thread
 // @access  Private
-router.post("/:threadId", auth.authGoogle, checkImg, controller.newReply);
+router.post(
+  "/:threadId",
+  auth.authGoogle,
+  validator.checkFiles,
+  controller.newReply
+);
+
+// @route   PUT api/reply/:replyId
+// @desc    Update a reply
+// @access  Private
 
 // @route   DELETE api/reply/:threadId
 // @desc    Delete a reply in a thread
 // @access  Private
+router.delete("/:threadId", auth.authGoogle, controller.deleteReplyOfThread);
+
+//-----------ADMIN---------
+
+// @route   GET api/reply/
+// @desc    Get all replies
+// @access  Private
+router.get("/", controller.getAllReplies);
+
+// @route   Delete api/reply/
+// @desc    Delete all replies
+// @access  Private
+router.delete("/", controller.deleteAllReplies);
 
 module.exports = router;
