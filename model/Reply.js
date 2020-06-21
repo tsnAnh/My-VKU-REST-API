@@ -22,7 +22,11 @@ const ReplySchema = new Schema({
     default: new Date().getTime(),
   },
   quoted: {
-    type: String,
+    isDeleted: Boolean,
+    replyId: {
+      type: String,
+      ref: "Reply",
+    },
   },
   images: [String],
 

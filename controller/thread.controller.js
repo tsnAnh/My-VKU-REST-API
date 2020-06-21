@@ -40,7 +40,8 @@ controller.getAllRepliesOfThread = async (req, res, next) => {
       .skip((page - 1) * limit)
       .sort({
         created_at: 1,
-      });
+      })
+      .populate("quoted.replyId");
 
     const count = await Reply.countDocuments();
 
@@ -83,7 +84,7 @@ controller.createThread = async (req, res, next) => {
 
 // UPDATE THREAD
 controller.updateThread = async (req, res, next) => {
-  const { thread, user } = req;
+  const { thread } = req;
   const { title } = req.body;
 
   try {
@@ -105,17 +106,20 @@ controller.updateThread = async (req, res, next) => {
 };
 //DELETE A THREAD
 controller.deleteThread = async (req, res, next) => {
-  const { thread, user } = req;
+  const { thread } = req;
   try {
     await Thread.deleteOne({ _id: thread._id });
+    await Reply.deleteMany({ threadId: thread._id });
 
     //Update numberOfThreads and lastestThread in the Forum
     const threads = await Thread.find({ forumId: thread.forumId }).sort({
       _id: -1,
     });
+    const replies = await Reply.find({ forumId: thread.forumId });
     await Forum.findOneAndUpdate(
       { _id: thread.forumId },
       {
+        numberOfReplies: replies.length,
         numberOfThreads: threads.length,
         lastestThread: threads.length > 0 ? threads[0]._id : null,
       }

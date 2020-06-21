@@ -6,7 +6,7 @@ const { ErrorHandler } = require("../helpers/error");
 module.exports = multer({
   storage: multer.diskStorage({
     destination: async (req, file, callback) => {
-      let path = __dirname + "/../public/images/" + req.params.threadId;
+      let path = __dirname + "\\..\\public\\images\\";
       if (!fs.existsSync(path)) {
         await fs.mkdirSync(path);
       }

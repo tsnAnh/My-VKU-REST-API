@@ -36,6 +36,7 @@ router.put(
   auth.authGoogle,
   validator.checkUser,
   validator.checkThread,
+  validator.checkPermission,
   controller.updateThread
 );
 
@@ -47,6 +48,7 @@ router.delete(
   auth.authGoogle,
   validator.checkUser,
   validator.checkThread,
+  validator.checkPermission,
   controller.deleteThread
 );
 

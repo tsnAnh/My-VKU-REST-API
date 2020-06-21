@@ -23,7 +23,9 @@ controller.getAllThreadsOfForum = async (req, res, next) => {
   try {
     const threads = await Thread.find({
       forumId: forum._id,
-    }).populate("uid");
+    })
+      .populate("uid")
+      .populate("lastestReply");
 
     res.json(threads);
   } catch (error) {

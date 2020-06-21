@@ -25,17 +25,20 @@ const ThreadSchema = new Schema({
       },
     },
   ],
-  numberOfReplies: {
-    type: Number,
-    default: 0,
-  },
+
   numberOfViews: {
     type: Number,
     default: 1,
   },
-  lastUpdatedOn: {
+  //Sẽ đc update mỗi lần tạo hoặc xóa reply
+  numberOfReplies: {
     type: Number,
-    default: new Date().getTime(),
+    default: 0,
+  },
+  lastestReply: {
+    type: String,
+    ref: "Reply",
+    default: null,
   },
   //   editHistory: [{}], từ từ làm
 });
