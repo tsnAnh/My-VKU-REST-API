@@ -4,45 +4,49 @@ const mongoose = require("mongoose");
 const Reply = require("../model/Reply");
 const Thread = require("../model/Thread");
 const Forum = require("../model/Forum");
-const User = require("../model/User");
 
 const controller = {};
+
 //CREATE A NEW REPLY
 controller.newReply = async (req, res, next) => {
   const { content, quoted } = req.body;
   const { user, thread, files: images } = req;
-  const createdAt = new Date().getTime();
   try {
     const newReply = new Reply({
       uid: user._id,
       threadId: thread._id,
+      forumId: thread.forumId,
       content,
-      createdAt,
       images,
     });
     //Check if quoted exsit and is in the thread
-    const reply = await Reply.findOne({ _id: quoted, threadId: thread._id });
-    if (reply) {
+    const quotedReply = await Reply.findOne({
+      _id: quoted,
+      threadId: thread._id,
+    });
+
+    if (quotedReply) {
       newReply.quoted = quoted;
     }
+
     await newReply.save();
 
     //Update Thread and Forum
+    const repliesOfThread = await Reply.find({ threadId: thread._id }).sort({
+      _id: -1,
+    });
     await Thread.findOneAndUpdate(
       { _id: thread._id },
       {
-        lastUpdatedOn: createdAt,
-        $inc: {
-          numberOfReplies: 1,
-        },
+        lastUpdatedOn: repliesOfThread[0].createdAt,
+        numberOfReplies: repliesOfThread.length,
       }
     );
+    const repliesOfForum = await Reply.find({ forumId: thread.forumId });
     await Forum.findOneAndUpdate(
       { _id: thread.forumId },
       {
-        $inc: {
-          numberOfReplies: 1,
-        },
+        numberOfReplies: repliesOfForum.length,
       }
     );
 
@@ -52,15 +56,68 @@ controller.newReply = async (req, res, next) => {
   }
 };
 
+//UPDATE A REPY
+controller.updateReply = async (req, res, next) => {
+  const { reply } = req;
+  const { files: images } = req;
+  const { content } = req.body;
+
+  try {
+    //Update lastestreply và numberOfreply of Forum
+    const replyUpdated = await Reply.findOneAndUpdate(
+      { _id: reply._id },
+      {
+        content,
+        images,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.json(replyUpdated);
+  } catch (error) {
+    next(error);
+  }
+};
+
 //DELETE A REPLY
-controller.deleteReplyOfThread = async (req, res) => {};
+controller.deleteReplyOfThread = async (req, res, next) => {
+  const { reply } = req;
+
+  try {
+    await Reply.deleteOne({ _id: reply._id });
+
+    //Update Thread and Forum
+    const replies = await Reply.find({ threadId: reply.threadId }).sort({
+      _id: -1,
+    });
+    await Thread.findOneAndUpdate(
+      { _id: reply.threadId },
+      {
+        lastUpdatedOn: replies[0].createdAt,
+        numberOfReplies: replies.length,
+      }
+    );
+    await Forum.findOneAndUpdate(
+      { _id: reply.forumId },
+      {
+        numberOfReplies: replies.length,
+      }
+    );
+    res.json("Delted reply");
+  } catch (error) {
+    next(error);
+  }
+};
 
 //-----------ADMIN------------
 controller.getAllReplies = async (req, res) => {
   try {
+    const replies = await Reply.find();
+    res.json(replies);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 

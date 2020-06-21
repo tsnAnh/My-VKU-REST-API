@@ -10,10 +10,10 @@ const ReplySchema = new Schema({
     type: String,
     ref: "Thread",
   },
-  // forumId: {
-  //   type: String,
-  //   ref: "Forum",
-  // },
+  forumId: {
+    type: String,
+    ref: "Forum",
+  },
   content: {
     type: String,
   },

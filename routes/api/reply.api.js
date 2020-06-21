@@ -20,18 +20,31 @@ router.post(
   controller.newReply
 );
 
+//TODO: Khi update chỉ cho ảnh và content, xử lý ảnh update???
 // @route   PUT api/reply/:replyId
 // @desc    Update a reply
 // @access  Private
+router.put(
+  "/:replyId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkReply,
+  validator.checkPermission,
+  validator.checkFiles,
+  controller.updateReply
+);
 
-// @route   DELETE api/reply/:threadId
+//TODO: Khi delete reply sẽ xóa ảnh
+// xử lý các quoted khi xóa reply
+// @route   DELETE api/reply/:replyId
 // @desc    Delete a reply in a thread
 // @access  Private
 router.delete(
-  "/:threadId",
+  "/:replyId",
   auth.authGoogle,
   validator.checkUser,
-  validator.checkThread,
+  validator.checkReply,
+  validator.checkPermission,
   controller.deleteReplyOfThread
 );
 

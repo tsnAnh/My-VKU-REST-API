@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 //MODEL
 const Thread = require("../model/Thread");
-const User = require("../model/User");
 const Forum = require("../model/Forum");
 const Reply = require("../model/Reply");
 
@@ -82,14 +81,32 @@ controller.createThread = async (req, res, next) => {
   }
 };
 
+// UPDATE THREAD
+controller.updateThread = async (req, res, next) => {
+  const { thread, user } = req;
+  const { title } = req.body;
+
+  try {
+    //Update lastestThread và numberOfThread of Forum
+    const threadUpdated = await Thread.findOneAndUpdate(
+      { _id: thread._id },
+      {
+        title,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.json(threadUpdated);
+  } catch (error) {
+    next(error);
+  }
+};
 //DELETE A THREAD
 controller.deleteThread = async (req, res, next) => {
   const { thread, user } = req;
   try {
-    //Check if the thread is owned by that user
-    if (thread.uid != user._id) {
-      throw new ErrorHandler(403, "Don not have access");
-    }
     await Thread.deleteOne({ _id: thread._id });
 
     //Update numberOfThreads and lastestThread in the Forum
@@ -99,7 +116,7 @@ controller.deleteThread = async (req, res, next) => {
     await Forum.findOneAndUpdate(
       { _id: thread.forumId },
       {
-        numberOfThreads: threads.length > 0 ? threads.length : 0,
+        numberOfThreads: threads.length,
         lastestThread: threads.length > 0 ? threads[0]._id : null,
       }
     );
@@ -143,6 +160,14 @@ controller.deleteAllThreads = async (req, res, next) => {
   try {
     await Thread.deleteMany();
     await Reply.deleteMany();
+    await Forum.updateMany(
+      {},
+      {
+        lastestThread: null,
+        numberOfThreads: 0,
+        numberOfReplies: 0,
+      }
+    );
     res.json("Deleted all threads");
   } catch (error) {
     next(error);

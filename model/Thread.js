@@ -38,19 +38,6 @@ const ThreadSchema = new Schema({
     default: new Date().getTime(),
   },
   //   editHistory: [{}], từ từ làm
-
-  //---------------Mấy cái dưới này nên xóa::
-  //   posts: {
-  //     type: [
-  //       {
-  //         type: Schema.Types.ObjectId,
-  //         ref: "Reply",
-  //       },
-  //     ],
-  //     default: [],
-  //   },
-  //   userDisplayName: String,
-  //   userAvatar: String,
 });
 
 module.exports = Thread = mongoose.model("Thread", ThreadSchema);

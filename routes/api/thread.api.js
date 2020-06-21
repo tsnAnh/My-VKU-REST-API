@@ -28,9 +28,16 @@ router.post(
   controller.createThread
 );
 
-// @route   POST api/thread/:threadId
+// @route   PUT api/thread/:threadId
 // @desc    Update a thread
 // @access  Private
+router.put(
+  "/:threadId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkThread,
+  controller.updateThread
+);
 
 // @route   DELETE api/thread/:threadId
 // @desc    Delete a thread
@@ -43,22 +50,19 @@ router.delete(
   controller.deleteThread
 );
 
-// @route   PUT api/thread/:threadId
+// @route   PUT api/thread/like/:threadId
 // @desc    Like or unlike a thread
 // @access  Private
 router.put(
-  "/:threadId",
+  "/like/:threadId",
   auth.authGoogle,
   validator.checkUser,
   validator.checkThread,
   controller.interactThread
 );
 
-//--------------------
-//-----------------ÍT DÙNG-------------------------------------------
-//-----------------------
 // @route   GET api/thread/:threadId
-// @desc    Get a thread by id
+// @desc    Get a thread
 // @access  Public
 router.get("/:threadId", validator.checkThread, controller.getThreadById);
 
@@ -74,4 +78,5 @@ router.get("/", controller.getAllThreads);
 // @desc    Get all threads
 // @access  Private
 router.delete("/", controller.deleteAllThreads);
+
 module.exports = router;

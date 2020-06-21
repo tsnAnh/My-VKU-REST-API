@@ -6,7 +6,7 @@ const controller = require("../../controller/forum.controller");
 
 //MIDDLEWARE
 const validator = require("../middleware/validator.middle");
-
+//TODO: Thiếu check input khi tạo
 // @route   GET api/forum/
 // @desc    Get all forums
 // @access  Public

@@ -63,10 +63,21 @@ exports.checkReply = async (req, res, next) => {
   }
 };
 
+//TODO: chưa test
+//CHECK PERMISSION - check thread hay reply có phải của user đó hay ko
+exports.checkPermission = async (req, res, next) => {
+  const { user, reply, thread } = req;
+  if ((reply && reply.uid != user._id) || (thread && thread.uid != user._id)) {
+    next(new ErrorHandler(404, "Not found"));
+  }
+  next();
+};
 //CHECK IMAGES
 exports.checkFiles = async (req, res, next) => {
+  const fieldData = "image";
+  const maxNumber = 3;
   try {
-    upload.array("image", 3)(req, res, function (err) {
+    upload.array(fieldData, maxNumber)(req, res, function (err) {
       if (err) {
         next(new ErrorHandler((err.statusCode = 400), err.message));
       }
