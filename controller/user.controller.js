@@ -18,7 +18,6 @@ controller.login = async (req, res) => {
         displayName: name,
         photoURL: picture,
       });
-      console.log(name);
       await newUser.save();
 
       res.json({
@@ -40,7 +39,7 @@ controller.login = async (req, res) => {
 //GET INFOR OF USER
 controller.loadUser = async (req, res) => {
   const { name, picture } = req.userGG;
-  const user = req.user;
+  const { user } = req;
   try {
     //update photo and displayname
     user.displayName = name;
@@ -48,8 +47,7 @@ controller.loadUser = async (req, res) => {
     await user.save();
     res.json(user);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 

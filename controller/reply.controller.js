@@ -7,34 +7,29 @@ const Forum = require("../model/Forum");
 const User = require("../model/User");
 
 const controller = {};
-//TODO: TEST
 //CREATE A NEW REPLY
-controller.newReply = async (req, res) => {
+controller.newReply = async (req, res, next) => {
   const { content, quoted } = req.body;
-  const uidGG = req.userGG.sub;
-  const threadId = req.params.threadId;
-  const images = req.files;
+  const { user, thread, files: images } = req;
   const createdAt = new Date().getTime();
   try {
-    const user = await User.findOne({ uidGG });
-
     const newReply = new Reply({
       uid: user._id,
-      threadId,
+      threadId: thread._id,
       content,
       createdAt,
       images,
     });
     //Check if quoted exsit and is in the thread
-    const reply = await Reply.findOne({ _id: quoted, threadId });
+    const reply = await Reply.findOne({ _id: quoted, threadId: thread._id });
     if (reply) {
       newReply.quoted = quoted;
     }
     await newReply.save();
 
     //Update Thread and Forum
-    const thread = await Thread.findOneAndUpdate(
-      { _id: threadId },
+    await Thread.findOneAndUpdate(
+      { _id: thread._id },
       {
         lastUpdatedOn: createdAt,
         $inc: {
@@ -53,8 +48,7 @@ controller.newReply = async (req, res) => {
 
     res.json(newReply);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 

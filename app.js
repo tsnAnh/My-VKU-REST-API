@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
-const cookieParser = require("cookie-parser");
+const { handleError } = require("./helpers/error");
 
 //CONNECT DB
 const connectDB = require("./config/db");
@@ -26,6 +26,10 @@ app.use("/api/thread", require("./routes/api/thread.api"));
 app.use("/api/reply", require("./routes/api/reply.api"));
 app.use("/api/user", require("./routes/api/user.api"));
 
+// HANDLE ERROR
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
 //FOR DEVELOPMENT
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

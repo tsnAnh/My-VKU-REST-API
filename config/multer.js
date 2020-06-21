@@ -1,6 +1,7 @@
 const multer = require("multer");
 const fs = require("fs-extra");
 var randomstring = require("randomstring");
+const { ErrorHandler } = require("../helpers/error");
 
 module.exports = multer({
   storage: multer.diskStorage({
@@ -16,14 +17,14 @@ module.exports = multer({
     },
   }),
   // Max size of file = 10MB
-  limits: { fileSize: 100000000 },
+  limits: { fileSize: 10000000 },
   //Only accept image
   fileFilter: (req, file, cb) => {
     const typeFile = file.mimetype.indexOf("image");
     if (typeFile > -1) {
       cb(null, true);
     } else {
-      cb(new Error("Only upload image"), false);
+      cb(new ErrorHandler(400, "Only upload image"), false);
     }
   },
 });

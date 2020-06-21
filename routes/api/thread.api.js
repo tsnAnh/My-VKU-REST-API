@@ -60,7 +60,7 @@ router.put(
 // @route   GET api/thread/:threadId
 // @desc    Get a thread by id
 // @access  Public
-router.get("/:threadId", controller.getThreadById);
+router.get("/:threadId", validator.checkThread, controller.getThreadById);
 
 //--------------------
 //-----------------ADMIN---------------------------------------------

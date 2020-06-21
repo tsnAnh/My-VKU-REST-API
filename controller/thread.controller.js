@@ -9,10 +9,11 @@ const Reply = require("../model/Reply");
 const controller = {};
 
 //GET INFO OF A THREAD
-controller.getThreadById = async (req, res) => {
+controller.getThreadById = async (req, res, next) => {
+  const thread = req.thread;
   try {
-    const thread = await Thread.findOneAndUpdate(
-      { _id: req.params.threadId },
+    const threadUpdated = await Thread.findOneAndUpdate(
+      { _id: thread._id },
       {
         $inc: {
           numberOfViews: 1,
@@ -23,23 +24,19 @@ controller.getThreadById = async (req, res) => {
       }
     );
 
-    res.json(thread);
+    res.json(threadUpdated);
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(404).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 // GET ALL REPLIES OF A THREAD
-controller.getAllRepliesOfThread = async (req, res) => {
-  const threadId = req.thread._id;
+controller.getAllRepliesOfThread = async (req, res, next) => {
+  const thread = req.thread;
   const { page = 1, limit = 10 } = req.query;
 
   try {
-    const replies = await Reply.find({ threadId })
+    const replies = await Reply.find({ threadId: thread._id })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .sort({
@@ -54,18 +51,13 @@ controller.getAllRepliesOfThread = async (req, res) => {
       currentPage: page * 1,
     });
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(404).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 // CREATE THREAD
-controller.createThread = async (req, res) => {
-  const forum = req.forum;
-  const user = req.user;
+controller.createThread = async (req, res, next) => {
+  const { forum, user } = req;
   const { title } = req.body;
 
   try {
@@ -86,22 +78,17 @@ controller.createThread = async (req, res) => {
     );
     res.json(newThread);
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(404).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 //DELETE A THREAD
-controller.deleteThread = async (req, res) => {
-  const thread = req.thread;
-  const user = req.user;
+controller.deleteThread = async (req, res, next) => {
+  const { thread, user } = req;
   try {
     //Check if the thread is owned by that user
     if (thread.uid != user._id) {
-      return res.status(404).json(null);
+      throw new ErrorHandler(403, "Don not have access");
     }
     await Thread.deleteOne({ _id: thread._id });
 
@@ -113,23 +100,18 @@ controller.deleteThread = async (req, res) => {
       { _id: thread.forumId },
       {
         numberOfThreads: threads.length > 0 ? threads.length : 0,
-        lastestThread: threads.length > 0 ? threadthreads[0]._id : 0,
+        lastestThread: threads.length > 0 ? threads[0]._id : null,
       }
     );
     res.json("deleted thread");
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(404).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 //LIKE OR UNLIKE THREAD
-controller.interactThread = async (req, res) => {
-  const thread = req.thread;
-  const user = req.user;
+controller.interactThread = async (req, res, next) => {
+  const { user, thread } = req;
   try {
     //check if the Thread has already been liked
     const removeIndex = thread.likes.findIndex((like) => like.uid == user._id);
@@ -143,39 +125,27 @@ controller.interactThread = async (req, res) => {
 
     await thread.save();
     res.json(thread.likes);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json(null);
-    }
-    res.status(500).send("Server Error");
+  } catch (error) {
+    next(error);
   }
 };
 
 // --------------------ADMIN------------------
-controller.getAllThreads = async (req, res) => {
+controller.getAllThreads = async (req, res, next) => {
   try {
     const threads = await Thread.find();
     res.json(threads);
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json(null);
-    }
-    res.status(500).send("Server Error");
+  } catch (error) {
+    next(error);
   }
 };
-controller.deleteAllThreads = async (req, res) => {
+controller.deleteAllThreads = async (req, res, next) => {
   try {
     await Thread.deleteMany();
     await Reply.deleteMany();
     res.json("Deleted all threads");
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json(null);
-    }
-    res.status(500).send("Server Error");
+  } catch (error) {
+    next(error);
   }
 };
 module.exports = controller;

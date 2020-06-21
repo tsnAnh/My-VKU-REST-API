@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const uploadImg = require("../../config/multer");
 //MIDDLEWARE
 const auth = require("../middleware/auth.middle");
 const validator = require("../middleware/validator.middle");
@@ -15,6 +14,8 @@ const controller = require("../../controller/reply.controller");
 router.post(
   "/:threadId",
   auth.authGoogle,
+  validator.checkUser,
+  validator.checkThread,
   validator.checkFiles,
   controller.newReply
 );
@@ -26,7 +27,13 @@ router.post(
 // @route   DELETE api/reply/:threadId
 // @desc    Delete a reply in a thread
 // @access  Private
-router.delete("/:threadId", auth.authGoogle, controller.deleteReplyOfThread);
+router.delete(
+  "/:threadId",
+  auth.authGoogle,
+  validator.checkUser,
+  validator.checkThread,
+  controller.deleteReplyOfThread
+);
 
 //-----------ADMIN---------
 

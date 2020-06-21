@@ -1,26 +1,36 @@
 const { OAuth2Client } = require("google-auth-library");
+const { ErrorHandler } = require("../../helpers/error");
+
+//CONFIG
 const CLIENT_ID = process.env.CLIENT_ID_TEST;
 const client = new OAuth2Client(CLIENT_ID);
 
 exports.authGoogle = async (req, res, next) => {
   const token = req.headers["gg-auth-token"];
 
-  // Check if not token
-  if (!token || token === "undefined") {
-    return res.status(401).json({ msg: "Token is not valid" });
-  }
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: CLIENT_ID,
-    });
-    req.userGG = ticket.getPayload();
+    // Check if not token
+    if (!token || token === "undefined") {
+      throw new ErrorHandler(401, "Token is not valid");
+    }
+
+    await client
+      .verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,
+      })
+      .then((ticket) => {
+        req.userGG = ticket.getPayload();
+      })
+      .catch((err) => {
+        throw new ErrorHandler(401, "Token is not valid");
+      });
     //CHECK DOMAIN
     if (req.userGG.hd !== "sict.udn.vn") {
-      return res.status(404).json({ msg: "Don't have access" });
+      throw new ErrorHandler(403, "Don not have access");
     }
     next();
   } catch (error) {
-    res.status(401).json({ msg: "Token is not valid" });
+    next(error);
   }
 };

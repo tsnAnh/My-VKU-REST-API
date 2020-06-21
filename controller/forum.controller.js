@@ -1,3 +1,5 @@
+const { ErrorHandler } = require("../helpers/error");
+
 //MODEL
 const Forum = require("../model/Forum");
 const Thread = require("../model/Thread");
@@ -6,34 +8,26 @@ const Reply = require("../model/Thread");
 const controller = {};
 
 //GET ALL FORUMS
-controller.getAllForums = async (req, res) => {
+controller.getAllForums = async (req, res, next) => {
   try {
-    let forums = await Forum.find().populate("lastestThread");
+    let forums = await Forum.find({}).populate("lastestThread");
     res.json(forums);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 //GET ALL THREADS OF A FORUM
-controller.getAllThreadsOfForum = async (req, res) => {
-  const forumId = req.params.forumId;
+controller.getAllThreadsOfForum = async (req, res, next) => {
+  const forum = req.forum;
   try {
-    const forum = await Forum.findById(forumId);
-    if (!forum) {
-      return res.status(401).json(null);
-    }
     const threads = await Thread.find({
-      forumId: forumId,
+      forumId: forum._id,
     }).populate("uid");
+
     res.json(threads);
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
@@ -42,18 +36,12 @@ controller.getAllThreadsOfForum = async (req, res) => {
 //-----------------------
 
 // GET A FORUM BY ID
-controller.getForumById = async (req, res) => {
-  const forumId = req.params.forumId;
+controller.getForumById = async (req, res, next) => {
   try {
-    const forum = await Forum.findById(forumId);
-
+    const forum = req.forum;
     res.json(forum);
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(401).json(null);
-    }
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
@@ -62,43 +50,63 @@ controller.getForumById = async (req, res) => {
 //-----------------------
 
 // CREATE A NEW FORUM
-controller.createForum = async (req, res) => {
+controller.createForum = async (req, res, next) => {
   try {
-    const { title, subtitle, description, image } = req.body;
+    const { title, tag } = req.body;
     const forum = new Forum({
       title,
-      subtitle,
-      description,
-      image,
+      tag,
     });
     await forum.save();
 
     res.json(forum);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
+  }
+};
+
+//UPDATE  FORUM
+controller.updateForum = async (req, res, next) => {
+  const { forum } = req;
+  const { title, tag } = req.body;
+  try {
+    const forumUpdated = await Forum.findOneAndUpdate(
+      { _id: forum._id },
+      {
+        title,
+        tag,
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.json(forumUpdated);
+  } catch (error) {
+    next(error);
   }
 };
 
 //DELETE A FORUM
-controller.deleteForum = async (req, res) => {
+controller.deleteForum = async (req, res, next) => {
+  const { forum } = req;
   try {
+    await Forum.deleteOne({ _id: forum._id });
+    res.json("deleted the forum");
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 
 //DELETE ALL FORUMS
-controller.deleteAllForums = async (req, res) => {
+controller.deleteAllForums = async (req, res, next) => {
   try {
     await Forum.deleteMany({});
     await Thread.deleteMany({});
     await Reply.deleteMany({});
     res.json("Deleted all forums");
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    next(error);
   }
 };
 module.exports = controller;
