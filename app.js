@@ -16,8 +16,12 @@ app.use(express.json());
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-//ADMIN API --- đang testing
-// app.use("/admin/user", require("./routes/admin/user.admin"));
+//ADMIN API
+app.get("/admin", (req, res) => res.send("Admin page"));
+app.use("/admin/user", require("./routes/admin/user.admin"));
+app.use("/admin/forum", require("./routes/admin/forum.admin"));
+app.use("/admin/thread", require("./routes/admin/thread.admin"));
+app.use("/admin/reply", require("./routes/admin/reply.admin"));
 
 //PUBLIC API
 app.get("/", (req, res) => res.send("API running"));

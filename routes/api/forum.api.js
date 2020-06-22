@@ -27,26 +27,4 @@ router.get(
   controller.getAllThreadsOfForum
 );
 
-// ------------------------ADMIN------------------------
-
-// @route   POST api/forum/
-// @desc    Create a forum
-// @access  Private
-router.post("/", controller.createForum);
-
-// @route   PUT api/forum/:forumId
-// @desc    Update a forum
-// @access  Private
-router.put("/:forumId", validator.checkForum, controller.updateForum);
-
-// @route   DELETE api/forum/:forumId
-// @desc    Delete a forum
-// @access  Private
-router.delete("/:forumId", validator.checkForum, controller.deleteForum);
-
-// @route   DELETE api/forum/
-// @desc    Delete all forums
-// @access  Private
-router.delete("/", controller.deleteAllForums);
-
 module.exports = router;

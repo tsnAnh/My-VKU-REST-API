@@ -68,17 +68,4 @@ router.put(
 // @access  Public
 router.get("/:threadId", validator.checkThread, controller.getThreadById);
 
-//--------------------
-//-----------------ADMIN---------------------------------------------
-//-----------------------
-// @route   GET api/thread/
-// @desc    Get all threads
-// @access  Private
-router.get("/", controller.getAllThreads);
-
-// @route   GET api/thread/
-// @desc    Get all threads
-// @access  Private
-router.delete("/", controller.deleteAllThreads);
-
 module.exports = router;

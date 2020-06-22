@@ -1,5 +1,7 @@
 var upload = require("../../config/multer");
 const { ErrorHandler } = require("../../helpers/error");
+//HELPERS
+const deleteImages = require("../../helpers/deleteImages");
 
 //MODEL
 const User = require("../../model/User");
@@ -63,7 +65,6 @@ exports.checkReply = async (req, res, next) => {
   }
 };
 
-//TODO: chưa test
 //CHECK PERMISSION - check thread hay reply có phải của user đó hay ko
 exports.checkPermission = async (req, res, next) => {
   const { user, reply, thread } = req;
@@ -74,14 +75,39 @@ exports.checkPermission = async (req, res, next) => {
 };
 //CHECK IMAGES
 exports.checkFiles = async (req, res, next) => {
-  const fieldData = "image";
+  const fieldData = "newImage";
   const maxNumber = 3;
+
   try {
-    upload.array(fieldData, maxNumber)(req, res, function (err) {
+    upload.array(fieldData, maxNumber)(req, res, async function (err) {
       if (err) {
         next(new ErrorHandler((err.statusCode = 400), err.message));
       }
       req.files = req.files.map((file) => `/images/${file.filename}`);
+
+      //Update reply, must check image nào bị xóa
+      if (req.method == "PUT") {
+        let { images = [] } = req.reply;
+        const updatedImages = req.body.images
+          ? JSON.parse(req.body.images)
+          : [];
+        const deletedImages = [];
+        images = images.filter((image) => {
+          if (!updatedImages.includes(image)) {
+            deletedImages.push(image);
+            return false;
+          }
+          return true;
+        });
+        if (deletedImages.length > 0) {
+          await deleteImages(deletedImages);
+        }
+        req.body.images = images.concat(req.files);
+      }
+      //CREATE REPLY
+      if (req.method == "POST") {
+        req.body.images = req.files;
+      }
       next();
     });
   } catch (error) {

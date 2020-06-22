@@ -1,9 +1,7 @@
-const { ErrorHandler } = require("../helpers/error");
-
 //MODEL
 const Forum = require("../model/Forum");
 const Thread = require("../model/Thread");
-const Reply = require("../model/Thread");
+const Reply = require("../model/Reply");
 
 const controller = {};
 
@@ -103,10 +101,10 @@ controller.deleteForum = async (req, res, next) => {
 //DELETE ALL FORUMS
 controller.deleteAllForums = async (req, res, next) => {
   try {
-    await Forum.deleteMany({});
-    await Thread.deleteMany({});
     await Reply.deleteMany({});
-    res.json("Deleted all forums");
+    // await Forum.deleteMany({});
+    // await Thread.deleteMany({});
+    res.json("Deleted all forums,threads,replies");
   } catch (error) {
     next(error);
   }

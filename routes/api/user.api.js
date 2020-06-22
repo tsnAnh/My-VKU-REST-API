@@ -18,15 +18,4 @@ router.get("/", auth.authGoogle, validator.checkUser, controller.loadUser);
 // @access  Private
 router.get("/auth", auth.authGoogle, controller.login);
 
-// ------ADMIN----------
-// @route   DELETE api/user/
-// @desc    delete all users
-// @access  Public
-router.delete("/", controller.deleteAllUsers);
-
-// @route   GET api/user/all
-// @desc    Get all users
-// @access  Public
-router.get("/all", controller.getAllUsers);
-
 module.exports = router;

@@ -20,7 +20,6 @@ router.post(
   controller.newReply
 );
 
-//TODO: Khi update , xử lý ảnh ???
 // @route   PUT api/reply/:replyId
 // @desc    Update a reply
 // @access  Private
@@ -34,7 +33,6 @@ router.put(
   controller.updateReply
 );
 
-//TODO: Khi delete reply sẽ xóa ảnh
 // @route   DELETE api/reply/:replyId
 // @desc    Delete a reply in a thread
 // @access  Private

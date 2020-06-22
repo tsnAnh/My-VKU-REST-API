@@ -34,3 +34,4 @@ exports.authGoogle = async (req, res, next) => {
     next(error);
   }
 };
+//TODO: thiếu auth cho admin

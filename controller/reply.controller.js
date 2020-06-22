@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+//HELPERS
+const deleteImages = require("../helpers/deleteImages");
 //MODEL
 const Reply = require("../model/Reply");
 const Thread = require("../model/Thread");
@@ -8,8 +10,8 @@ const controller = {};
 
 //CREATE A NEW REPLY
 controller.newReply = async (req, res, next) => {
-  let { content, quoted } = req.body;
-  const { user, thread, files: images } = req;
+  let { content, quoted, images } = req.body;
+  const { user, thread } = req;
   try {
     //Check if quoted exsit and is in the thread
     const quotedReply = await Reply.findOne({
@@ -61,8 +63,7 @@ controller.newReply = async (req, res, next) => {
 //UPDATE A REPLY
 controller.updateReply = async (req, res, next) => {
   const { reply } = req;
-  const { files: images } = req;
-  const { content } = req.body;
+  const { content, images } = req.body;
 
   try {
     //Update lastestreply và numberOfreply of Forum
@@ -89,7 +90,7 @@ controller.deleteReplyOfThread = async (req, res, next) => {
 
   try {
     await Reply.deleteOne({ _id: reply._id });
-
+    await deleteImages(reply.images);
     //Update Thread, Forum and Reply quoted
     const repliesOfThread = await Reply.find({ threadId: reply.threadId }).sort(
       {
