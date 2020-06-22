@@ -104,6 +104,7 @@ controller.updateThread = async (req, res, next) => {
     next(error);
   }
 };
+
 //DELETE A THREAD
 controller.deleteThread = async (req, res, next) => {
   const { thread } = req;

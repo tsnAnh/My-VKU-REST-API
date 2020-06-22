@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 //ADMIN API --- đang testing
 // app.use("/admin/user", require("./routes/admin/user.admin"));

@@ -81,9 +81,7 @@ exports.checkFiles = async (req, res, next) => {
       if (err) {
         next(new ErrorHandler((err.statusCode = 400), err.message));
       }
-      req.files = req.files.map(
-        (file) => `public/images/${req.params.threadId}/${file.filename}`
-      );
+      req.files = req.files.map((file) => `/images/${file.filename}`);
       next();
     });
   } catch (error) {
