@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="317c7eb1-2db8-453d-8bac-7e941cde2b05" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1Zk3sKABBl2uUeXsmjJJzW4rxn5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="settings.phonegap" />
+  </component>
+  <component name="RunManager">
+    <configuration name="www" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/bin/www" working-dir="$PROJECT_DIR$/bin">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.www" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="317c7eb1-2db8-453d-8bac-7e941cde2b05" name="Default Changelist" comment="" />
+      <created>1585369471587</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585369471587</updated>
+      <workItem from="1585369479059" duration="2703000" />
+      <workItem from="1586535574962" duration="966000" />
+      <workItem from="1589005830134" duration="84000" />
+      <workItem from="1589005964370" duration="7313000" />
+      <workItem from="1589028337162" duration="215000" />
+      <workItem from="1589028584699" duration="16641000" />
+      <workItem from="1589121222194" duration="14831000" />
+      <workItem from="1589245407795" duration="3628000" />
+      <workItem from="1589297357214" duration="28000" />
+      <workItem from="1590400388147" duration="600000" />
+      <workItem from="1590498101597" duration="3560000" />
+      <workItem from="1590546717925" duration="530000" />
+      <workItem from="1590634971384" duration="6903000" />
+      <workItem from="1590987170233" duration="954000" />
+      <workItem from="1591069232137" duration="1199000" />
+      <workItem from="1591075170041" duration="12132000" />
+      <workItem from="1591152105229" duration="10875000" />
+      <workItem from="1591165522936" duration="4547000" />
+      <workItem from="1591191580260" duration="3281000" />
+      <workItem from="1591234570521" duration="1936000" />
+      <workItem from="1592307287979" duration="101000" />
+    </task>
+    <task id="LOCAL-00001" summary="update">
+      <created>1585370183931</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585370183931</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update">
+      <created>1585372118773</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1585372118773</updated>
+    </task>
+    <task id="LOCAL-00003" summary="update 0.1.0-dev02">
+      <created>1586535814583</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1586535814583</updated>
+    </task>
+    <task id="LOCAL-00004" summary="update 0.1.0-dev11">
+      <created>1589009351272</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1589009351272</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update 0.1.1-dev01">
+      <created>1589010899411</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1589010899411</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update 0.1.1-dev02">
+      <created>1589011179920</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1589011179920</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update 0.1.1-dev03">
+      <created>1589011436114</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1589011436114</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update 0.1.1-dev04">
+      <created>1589012553741</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1589012553742</updated>
+    </task>
+    <task id="LOCAL-00009" summary="update 0.1.1-dev04">
+      <created>1589012630560</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1589012630560</updated>
+    </task>
+    <task id="LOCAL-00010" summary="update 0.1.1-dev05">
+      <created>1589012665681</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1589012665681</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update 0.1.1-dev06">
+      <created>1590400963363</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1590400963363</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update 0.1.1-dev07: add paging for replies (posts)">
+      <created>1590647284133</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1590647284133</updated>
+    </task>
+    <task id="LOCAL-00013" summary="update 0.1.1-dev08: fix paging for replies (posts)">
+      <created>1590654145207</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1590654145208</updated>
+    </task>
+    <task id="LOCAL-00014" summary="update 0.1.1-dev09: refactor">
+      <created>1591154672742</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1591154672742</updated>
+    </task>
+    <task id="LOCAL-00015" summary="update 0.1.1-dev10: fix refactor issues">
+      <created>1591155439746</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1591155439746</updated>
+    </task>
+    <task id="LOCAL-00016" summary="update 0.1.1-dev10: fix refactor issues">
+      <created>1591191658090</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1591191658090</updated>
+    </task>
+    <task id="LOCAL-00017" summary="update 0.1.1-dev11: fix refactor issues">
+      <created>1591191981075</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1591191981075</updated>
+    </task>
+    <task id="LOCAL-00018" summary="update 0.1.1-dev11: fix refactor issues">
+      <created>1591192114480</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1591192114480</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+    <MESSAGE value="update" />
+    <MESSAGE value="update 0.1.0-dev02" />
+    <MESSAGE value="update 0.1.0-dev11" />
+    <MESSAGE value="update 0.1.1-dev01" />
+    <MESSAGE value="update 0.1.1-dev02" />
+    <MESSAGE value="update 0.1.1-dev03" />
+    <MESSAGE value="update 0.1.1-dev04" />
+    <MESSAGE value="update 0.1.1-dev05" />
+    <MESSAGE value="update 0.1.1-dev06" />
+    <MESSAGE value="update 0.1.1-dev07: add paging for replies (posts)" />
+    <MESSAGE value="update 0.1.1-dev08: fix paging for replies (posts)" />
+    <MESSAGE value="update 0.1.1-dev09: refactor" />
+    <MESSAGE value="update 0.1.1-dev10: fix refactor issues" />
+    <MESSAGE value="update 0.1.1-dev11: fix refactor issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="update 0.1.1-dev11: fix refactor issues" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="528" y="115" width="364" height="571" key="#JSLint" timestamp="1591084321348">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="528" y="115" width="364" height="571" key="#JSLint/64.27.1302.741@64.27.1302.741" timestamp="1591084321348" />
+    <state x="310" y="41" width="800" height="719" key="#Plugins" timestamp="1589006491497">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="310" y="41" width="800" height="719" key="#Plugins/64.27.1302.741@64.27.1302.741" timestamp="1589006491497" />
+    <state x="448" y="146" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591081855432">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="448" y="146" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/64.27.1302.741@64.27.1302.741" timestamp="1591081855432" />
+    <state x="271" y="27" width="912" height="741" key="CommitChangelistDialog2" timestamp="1591192114208">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="271" y="27" width="912" height="741" key="CommitChangelistDialog2/64.27.1302.741@64.27.1302.741" timestamp="1591192114208" />
+    <state x="276" y="27" width="912" height="741" key="CommitChangelistDialog2/70.27.1296.741@70.27.1296.741" timestamp="1586535813811" />
+    <state x="541" y="291" width="343" height="219" key="Github.ShareDialog" timestamp="1585369679209">
+      <screen x="70" y="27" width="1296" height="741" />
+    </state>
+    <state x="541" y="291" width="343" height="219" key="Github.ShareDialog/70.27.1296.741@70.27.1296.741" timestamp="1585369679209" />
+    <state x="448" y="27" width="530" height="741" key="Github.UntrackedFilesDialog" timestamp="1585369697671">
+      <screen x="70" y="27" width="1296" height="741" />
+    </state>
+    <state x="448" y="27" width="530" height="741" key="Github.UntrackedFilesDialog/70.27.1296.741@70.27.1296.741" timestamp="1585369697671" />
+    <state width="1279" height="163" key="GridCell.Tab.0.bottom" timestamp="1591195681685">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state width="1279" height="163" key="GridCell.Tab.0.bottom/64.27.1302.741@64.27.1302.741" timestamp="1591195681685" />
+    <state width="1279" height="163" key="GridCell.Tab.0.center" timestamp="1591195681682">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state width="1279" height="163" key="GridCell.Tab.0.center/64.27.1302.741@64.27.1302.741" timestamp="1591195681682" />
+    <state width="1279" height="163" key="GridCell.Tab.0.left" timestamp="1591195681679">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state width="1279" height="163" key="GridCell.Tab.0.left/64.27.1302.741@64.27.1302.741" timestamp="1591195681679" />
+    <state width="1279" height="163" key="GridCell.Tab.0.right" timestamp="1591195681683">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state width="1279" height="163" key="GridCell.Tab.0.right/64.27.1302.741@64.27.1302.741" timestamp="1591195681683" />
+    <state x="435" y="27" width="549" height="741" key="RollbackChangesDialog" timestamp="1589200569509">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="435" y="27" width="549" height="741" key="RollbackChangesDialog/64.27.1302.741@64.27.1302.741" timestamp="1589200569509" />
+    <state x="202" y="31" width="1022" height="737" key="SettingsEditor" timestamp="1591083635607">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="202" y="31" width="1022" height="737" key="SettingsEditor/64.27.1302.741@64.27.1302.741" timestamp="1591083635607" />
+    <state x="207" y="31" width="1022" height="737" key="SettingsEditor/70.27.1296.741@70.27.1296.741" timestamp="1585369542865" />
+    <state x="308" y="129" width="800" height="543" key="Vcs.Push.Dialog.v2" timestamp="1591192116752">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="308" y="129" width="800" height="543" key="Vcs.Push.Dialog.v2/64.27.1302.741@64.27.1302.741" timestamp="1591192116752" />
+    <state x="313" y="129" width="800" height="543" key="Vcs.Push.Dialog.v2/70.27.1296.741@70.27.1296.741" timestamp="1586535832580" />
+    <state x="378" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1591082263892">
+      <screen x="64" y="27" width="1302" height="741" />
+    </state>
+    <state x="378" y="89" width="672" height="678" key="search.everywhere.popup/64.27.1302.741@64.27.1302.741" timestamp="1591082263892" />
+  </component>
+</project>
