@@ -11,7 +11,15 @@ const notificationSchema = new Schema({
     default: () => new Date().getTime(),
   },
   message: {
-    data: Object,
+    data: {
+      uid: {
+        type: String,
+        ref: "User"
+      },
+      userDisplayName: String,
+      title: String,
+      content: String
+    },
     notification: Object,
   },
   hasSeen: {
