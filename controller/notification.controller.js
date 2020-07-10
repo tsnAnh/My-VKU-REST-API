@@ -12,7 +12,7 @@ controller.getNotificationById = async (req, res, next) => {
   const { user } = req;
   try {
     const notifications = await Notification.find({ uid: user._id }).populate(
-      "data.uid"
+      "message.data.uid"
     );
     res.json(notifications);
   } catch (error) {
