@@ -130,7 +130,7 @@ controller.alertReplyOnThread = async (req, res) => {
         userDisplayName: replier.displayName,
         title: "messageToOwner",
         content: newReply.content,
-        photoURL: liker.photoURL
+        photoURL: replier.photoURL
       },
       token: tokenOfOwner.tokenFCM,
     };
@@ -159,7 +159,7 @@ controller.alertReplyOnThread = async (req, res) => {
           userDisplayName: replier.displayName,
           title: "messageToQuotedUser",
           content: quotedReply.content,
-          photoURL: liker.photoURL
+          photoURL: replier.photoURL
         },
         token: tokenOfQuotedUser.tokenFCM,
       };
@@ -211,7 +211,7 @@ controller.alertReplyOnThread = async (req, res) => {
               userDisplayName: replier.displayName,
               title: "messageToOwnerCustom",
               content: quotedReply.content,
-              photoURL: liker.photoURL
+              photoURL: replier.photoURL
             },
             token: tokenOfOwner.tokenFCM,
           };
@@ -234,7 +234,7 @@ controller.alertReplyOnThread = async (req, res) => {
         userDisplayName: replier.displayName,
         title: "messageToAllSubscribers",
         content: thread.title,
-        photoURL: liker.photoURL
+        photoURL: replier.photoURL
       },
       tokens: tokenOfAllSubcribers.map((token) => token.tokenFCM),
     };
