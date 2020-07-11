@@ -40,9 +40,10 @@ controller.getAllRepliesOfThread = async (req, res, next) => {
       .sort({
         created_at: 1,
       })
-      .populate("quoted.replyId")
-      .populate("uid")
-      .populate("likes.uid");
+      .populate({path: "quoted.replyId", model: "Reply", populate: [
+        {path: "uid", model: "User"}
+      ]}).populate("uid");
+      // .populate("likes.uid");
 
     const count = await Reply.find({ threadId: thread._id }).countDocuments();
 

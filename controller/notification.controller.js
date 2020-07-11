@@ -11,6 +11,7 @@ const controller = {};
 controller.getNotificationById = async (req, res, next) => {
   const { user } = req;
   try {
+    console.log(user);
     const notifications = await Notification.find({ uid: user._id });
     res.json(notifications);
   } catch (error) {

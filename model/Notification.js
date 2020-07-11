@@ -17,7 +17,9 @@ const notificationSchema = new Schema({
         ref: "User"
       },
       userDisplayName: String,
-      content: String
+      content: String,
+      photoURL: String,
+      title: String
     },
     notification: Object,
   },
