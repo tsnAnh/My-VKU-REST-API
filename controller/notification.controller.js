@@ -11,9 +11,7 @@ const controller = {};
 controller.getNotificationById = async (req, res, next) => {
   const { user } = req;
   try {
-    const notifications = await Notification.find({ uid: user._id }).populate({
-      path: "message.data.uid", model: "User"
-    });
+    const notifications = await Notification.find({ uid: user._id });
     res.json(notifications);
   } catch (error) {
     next(error);
@@ -66,6 +64,7 @@ controller.alertLikeReply = async (req, res) => {
         userDisplayName: liker.displayName,
         title: "messageLike",
         content: reply.content,
+        photoURL: liker.photoURL
       },
       token: token.tokenFCM,
     };
@@ -131,6 +130,7 @@ controller.alertReplyOnThread = async (req, res) => {
         userDisplayName: replier.displayName,
         title: "messageToOwner",
         content: newReply.content,
+        photoURL: liker.photoURL
       },
       token: tokenOfOwner.tokenFCM,
     };
@@ -159,6 +159,7 @@ controller.alertReplyOnThread = async (req, res) => {
           userDisplayName: replier.displayName,
           title: "messageToQuotedUser",
           content: quotedReply.content,
+          photoURL: liker.photoURL
         },
         token: tokenOfQuotedUser.tokenFCM,
       };
@@ -210,6 +211,7 @@ controller.alertReplyOnThread = async (req, res) => {
               userDisplayName: replier.displayName,
               title: "messageToOwnerCustom",
               content: quotedReply.content,
+              photoURL: liker.photoURL
             },
             token: tokenOfOwner.tokenFCM,
           };
@@ -232,6 +234,7 @@ controller.alertReplyOnThread = async (req, res) => {
         userDisplayName: replier.displayName,
         title: "messageToAllSubscribers",
         content: thread.title,
+        photoURL: liker.photoURL
       },
       tokens: tokenOfAllSubcribers.map((token) => token.tokenFCM),
     };
