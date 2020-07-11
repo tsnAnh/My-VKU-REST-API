@@ -106,6 +106,7 @@ controller.alertLikeReply = async (req, res) => {
 
 controller.alertReplyOnThread = async (req, res) => {
   const { user: replier, thread, newReply } = req;
+  console.log(replier);
   try {
     const owner = await User.findById(thread.uid);
     const tokenOfOwner = await Token.findOne({ uid: owner._id });
