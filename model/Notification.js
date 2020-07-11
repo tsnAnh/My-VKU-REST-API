@@ -17,7 +17,6 @@ const notificationSchema = new Schema({
         ref: "User"
       },
       userDisplayName: String,
-      title: String,
       content: String
     },
     notification: Object,
