@@ -1,3 +1,4 @@
+"use strict";
 const mongoose = require("mongoose");
 
 //MODEL
@@ -89,6 +90,8 @@ controller.updateReply = async (req, res, next) => {
 
   try {
     //Update latestreply và numberOfreply of Forum
+    images.filter((image) => !deletedImages.includes(image));
+
     const replyUpdated = await Reply.findOneAndUpdate(
       { _id: reply._id },
       {
@@ -99,7 +102,6 @@ controller.updateReply = async (req, res, next) => {
         new: true,
       }
     );
-    await image.delete(deletedImages);
 
     res.json(replyUpdated);
   } catch (error) {

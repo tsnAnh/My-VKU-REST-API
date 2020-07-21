@@ -119,11 +119,9 @@ exports.checkFiles = async (req, res, next) => {
         const deletedImages = [];
         if (typeof images !== "undefined" && images.length) {
           images = images.filter((image) => {
-            if (image) {
-              if (!updatedImages.includes(image)) {
-                deletedImages.push(image);
-                return false;
-              }
+            if (!updatedImages.includes(image)) {
+              deletedImages.push(image);
+              return false;
             }
             return true;
           });
