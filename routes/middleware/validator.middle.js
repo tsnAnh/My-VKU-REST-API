@@ -120,7 +120,7 @@ exports.checkFiles = async (req, res, next) => {
           ? req.body.images
           : [];
         const deletedImages = [];
-        if (images) {
+        if (images && images.length > 0) {
           images = images.filter((image) => {
             if (!updatedImages.includes(image)) {
               deletedImages.push(image);
