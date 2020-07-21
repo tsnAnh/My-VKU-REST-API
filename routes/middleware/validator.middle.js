@@ -115,15 +115,15 @@ exports.checkFiles = async (req, res, next) => {
       //Use for updating reply, must check image nào bị xóa
       if (req.method == "PUT") {
         let { images = [] } = req.reply;
-        const updatedImages = req.body.images
-          ? req.body.images
-          : [];
+        const updatedImages = req.body.images ? req.body.images : [];
         const deletedImages = [];
-        if (typeof images !== 'undefined' && images.length) {
+        if (typeof images !== "undefined" && images.length) {
           images = images.filter((image) => {
-            if (!updatedImages.includes(image)) {
-              deletedImages.push(image);
-              return false;
+            if (image) {
+              if (!updatedImages.includes(image)) {
+                deletedImages.push(image);
+                return false;
+              }
             }
             return true;
           });
