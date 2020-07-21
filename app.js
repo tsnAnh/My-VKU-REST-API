@@ -38,7 +38,6 @@ app.use("/admin/token", require("./routes/admin/token.admin"));
 
 //PUBLIC API
 app.get("/", (req, res) => res.send("API running"));
-app.use("/api/news", require("./routes/api/news.api"));
 app.use("/api/forum", require("./routes/api/forum.api"));
 app.use("/api/thread", require("./routes/api/thread.api"));
 app.use("/api/reply", require("./routes/api/reply.api"));
