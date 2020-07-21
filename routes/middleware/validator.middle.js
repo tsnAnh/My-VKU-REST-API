@@ -120,14 +120,15 @@ exports.checkFiles = async (req, res, next) => {
           ? req.body.images
           : [];
         const deletedImages = [];
-        images = images.filter((image) => {
-          if (!updatedImages.includes(image)) {
-            deletedImages.push(image);
-            return false;
-          }
-          return true;
-        });
-
+        if (images) {
+          images = images.filter((image) => {
+            if (!updatedImages.includes(image)) {
+              deletedImages.push(image);
+              return false;
+            }
+            return true;
+          });
+        }
         req.body.images = images.concat(req.files);
         req.body.deletedImages = deletedImages;
       }
