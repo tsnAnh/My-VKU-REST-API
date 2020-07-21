@@ -117,7 +117,7 @@ exports.checkFiles = async (req, res, next) => {
         let { images = [] } = req.reply;
 	console.log(req.body.images);
         const updatedImages = req.body.images
-          ? JSON.parse(req.body.images)
+          ? req.body.images
           : [];
         const deletedImages = [];
         images = images.filter((image) => {
