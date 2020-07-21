@@ -117,7 +117,7 @@ exports.checkFiles = async (req, res, next) => {
       if (req.method == "PUT") {
         let { images = [] } = req.reply;
         const updatedImages = req.body.images
-          ? JSON.parse(req.body.images)
+          ? req.body.images
           : [];
         const deletedImages = [];
         images = images.filter((image) => {
