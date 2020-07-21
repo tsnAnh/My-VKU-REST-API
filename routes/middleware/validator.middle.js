@@ -104,7 +104,6 @@ exports.checkFiles = async (req, res, next) => {
   try {
     upload.array(fieldData, maxImages)(req, res, async function (err) {
       if (err) {
-        console.log(err);
         next(new ErrorHandler((err.statusCode = 400), err.message));
       }
       req.files = req.files
@@ -116,6 +115,7 @@ exports.checkFiles = async (req, res, next) => {
       //Use for updating reply, must check image nào bị xóa
       if (req.method == "PUT") {
         let { images = [] } = req.reply;
+	console.log(req.body.images);
         const updatedImages = req.body.images
           ? req.body.images
           : [];
